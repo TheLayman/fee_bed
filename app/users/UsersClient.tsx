@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState, FormEvent } from "react";
+import { useState, FormEvent } from "react";
 
 export type User = { id: string; username: string; role: string };
 
