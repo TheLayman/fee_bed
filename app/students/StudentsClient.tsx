@@ -55,6 +55,7 @@ export default function StudentsClient({
   }
 
   async function deleteStudent(id: string) {
+    if (!confirm("Delete this student?")) return;
     await fetch(`/api/students/${id}`, { method: "DELETE" });
     setStudents((s) => s.filter((st) => st.id !== id));
   }

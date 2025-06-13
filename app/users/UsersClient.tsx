@@ -39,6 +39,7 @@ export default function UsersClient({
   }
 
   async function deleteUser(id: string) {
+    if (!confirm("Delete this user?")) return;
     await fetch(`/api/users/${id}`, { method: "DELETE" });
     setUsers((u) => u.filter((user) => user.id !== id));
   }
