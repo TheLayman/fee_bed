@@ -14,7 +14,7 @@ export default async function Home() {
           </form>
         ) : (
           <Link className="underline" href="/login">Login</Link>
-        )
+        )}
       </div>
       <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
         <Image
