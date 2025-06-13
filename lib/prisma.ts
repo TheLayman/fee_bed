@@ -1,5 +1,4 @@
-// Import the generated PrismaClient from the custom output path
-import { PrismaClient } from '@/app/generated/prisma';
+import { PrismaClient } from '@prisma/client';
 
 declare global {
   // -- prevents multiple instances in dev with hot-reload
