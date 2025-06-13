@@ -19,6 +19,7 @@ export default function StudentsClient({
   const [name, setName] = useState("");
   const [batch, setBatch] = useState("");
   const [totalFee, setTotalFee] = useState("");
+  const [error, setError] = useState<string | null>(null);
 
   async function refresh() {
     const res = await fetch("/api/students");
@@ -30,11 +31,18 @@ export default function StudentsClient({
 
   async function addStudent(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    await fetch("/api/students", {
+    setError(null);
+    const res = await fetch("/api/students", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name, batch, totalFee }),
     });
+    if (!res.ok) {
+      const text = await res.text();
+      setError(text);
+      alert(text);
+      return;
+    }
     setName("");
     setBatch("");
     setTotalFee("");
@@ -71,6 +79,7 @@ export default function StudentsClient({
         <button className="px-4 py-2 bg-blue-600 text-white rounded" type="submit">
           Add Student
         </button>
+        {error && <p className="text-red-600">{error}</p>}
       </form>
       <ul className="space-y-2">
         {students.map((s) => (
