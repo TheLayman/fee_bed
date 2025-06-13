@@ -19,6 +19,12 @@ export default function StudentsClient({
   const [name, setName] = useState("");
   const [batch, setBatch] = useState("");
   const [totalFee, setTotalFee] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [editing, setEditing] = useState<Student | null>(null);
+  const [editName, setEditName] = useState("");
+  const [editBatch, setEditBatch] = useState("");
+  const [editTotalFee, setEditTotalFee] = useState("");
+  const [editError, setEditError] = useState<string | null>(null);
 
   async function refresh() {
     const res = await fetch("/api/students");
@@ -30,11 +36,18 @@ export default function StudentsClient({
 
   async function addStudent(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    await fetch("/api/students", {
+    setError(null);
+    const res = await fetch("/api/students", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ name, batch, totalFee }),
     });
+    if (!res.ok) {
+      const text = await res.text();
+      setError(text);
+      alert(text);
+      return;
+    }
     setName("");
     setBatch("");
     setTotalFee("");
@@ -42,8 +55,40 @@ export default function StudentsClient({
   }
 
   async function deleteStudent(id: string) {
+    if (!confirm("Delete this student?")) return;
     await fetch(`/api/students/${id}`, { method: "DELETE" });
     setStudents((s) => s.filter((st) => st.id !== id));
+  }
+
+  function startEdit(student: Student) {
+    setEditing(student);
+    setEditName(student.name);
+    setEditBatch(student.batch);
+    setEditTotalFee(student.totalFee);
+    setEditError(null);
+  }
+
+  async function updateStudent(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    if (!editing) return;
+    setEditError(null);
+    const res = await fetch(`/api/students/${editing.id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name: editName,
+        batch: editBatch,
+        totalFee: editTotalFee,
+      }),
+    });
+    if (!res.ok) {
+      const text = await res.text();
+      setEditError(text);
+      alert(text);
+      return;
+    }
+    setEditing(null);
+    refresh();
   }
 
   return (
@@ -71,20 +116,61 @@ export default function StudentsClient({
         <button className="px-4 py-2 bg-blue-600 text-white rounded" type="submit">
           Add Student
         </button>
+        {error && <p className="text-red-600">{error}</p>}
       </form>
       <ul className="space-y-2">
         {students.map((s) => (
-          <li key={s.id} className="flex justify-between border p-2 rounded">
-            <span>
-              {s.name} - {s.batch} - {s.totalFee}
-            </span>
-            {isAdmin && (
-              <button
-                onClick={() => deleteStudent(s.id)}
-                className="text-red-600"
-              >
-                Delete
-              </button>
+          <li key={s.id} className="border p-2 rounded space-y-2">
+            {editing && editing.id === s.id ? (
+              <form onSubmit={updateStudent} className="space-y-2">
+                <input
+                  className="w-full border p-2 rounded"
+                  placeholder="Name"
+                  value={editName}
+                  onChange={(e) => setEditName(e.target.value)}
+                />
+                <input
+                  className="w-full border p-2 rounded"
+                  placeholder="Batch"
+                  value={editBatch}
+                  onChange={(e) => setEditBatch(e.target.value)}
+                />
+                <input
+                  className="w-full border p-2 rounded"
+                  placeholder="Total Fee"
+                  value={editTotalFee}
+                  onChange={(e) => setEditTotalFee(e.target.value)}
+                />
+                <div className="flex gap-2">
+                  <button className="px-4 py-2 bg-blue-600 text-white rounded" type="submit">
+                    Save
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setEditing(null)}
+                    className="px-4 py-2 bg-gray-300 rounded"
+                  >
+                    Cancel
+                  </button>
+                </div>
+                {editError && <p className="text-red-600">{editError}</p>}
+              </form>
+            ) : (
+              <div className="flex justify-between items-center">
+                <span>
+                  {s.name} - {s.batch} - {s.totalFee}
+                </span>
+                {isAdmin && (
+                  <div className="space-x-2">
+                    <button onClick={() => startEdit(s)} className="text-blue-600">
+                      Edit
+                    </button>
+                    <button onClick={() => deleteStudent(s.id)} className="text-red-600">
+                      Delete
+                    </button>
+                  </div>
+                )}
+              </div>
             )}
           </li>
         ))}

@@ -21,7 +21,7 @@ The project aims to implement a complete fee management system for students. Bel
 - Restrict access by checking `session.user.role === 'admin'`.
 :::
 
-## Phase 3 – Student Record Management *(pending)*
+## Phase 3 – Student Record Management *(done)*
 - Allow a signed-in user to create student records (name, batch, totalFee). Only admins can edit or delete them.
 
 :::task-stub{title="Implement Student CRUD"}
