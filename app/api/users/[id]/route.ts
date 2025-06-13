@@ -5,8 +5,9 @@ import { authOptions } from "@/lib/auth";
 
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: { id: string } }
 ) {
+  const { params } = context;
   const session = await getServerSession(authOptions);
   if (!session || session.user.role !== "admin") {
     return new NextResponse("Unauthorized", { status: 403 });
