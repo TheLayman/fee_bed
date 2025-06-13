@@ -9,9 +9,13 @@ export default async function StudentsPage() {
   if (!session) {
     redirect("/login");
   }
-  const students = await prisma.student.findMany({
+  const dbStudents = await prisma.student.findMany({
     select: { id: true, name: true, batch: true, totalFee: true },
   });
+  const students = dbStudents.map((s) => ({
+    ...s,
+    totalFee: s.totalFee.toString(),
+  }));
   return (
     <StudentsClient
       initialStudents={students}
