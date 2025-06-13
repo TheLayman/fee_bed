@@ -28,6 +28,9 @@ export default async function Home() {
         {session && (
           <>
             <p className="text-sm">Logged in as {session.user?.name}</p>
+            <Link className="underline" href="/students">
+              Students
+            </Link>
             {session.user?.role === "admin" && (
               <Link className="underline" href="/users">
                 Users
