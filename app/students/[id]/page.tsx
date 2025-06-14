@@ -4,18 +4,23 @@ import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import StudentClient from "./StudentClient";
 
-export default async function StudentPage({ params }: { params: { id: string } }) {
+export default async function StudentPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
   const session = await getServerSession(authOptions);
   if (!session) {
     redirect("/login");
   }
   const student = await prisma.student.findUnique({
-    where: { id: params.id },
+    where: { id },
     select: { id: true, name: true, batch: true, totalFee: true },
   });
   if (!student) redirect("/students");
   const txns = await prisma.transaction.findMany({
-    where: { studentId: params.id },
+    where: { studentId: id },
     select: {
       id: true,
       studentId: true,
