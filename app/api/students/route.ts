@@ -4,13 +4,20 @@ import { prisma } from "@/lib/prisma";
 import { authOptions } from "@/lib/auth";
 import { Prisma } from "@prisma/client";
 
-export async function GET() {
+export async function GET(req: Request) {
   const session = await getServerSession(authOptions);
   if (!session) {
     return new NextResponse("Unauthorized", { status: 403 });
   }
+  const url = new URL(req.url);
+  const q = url.searchParams.get("q") || undefined;
+  const where = q
+    ? { name: { contains: q, mode: "insensitive" } }
+    : undefined;
   const students = await prisma.student.findMany({
+    where,
     select: { id: true, name: true, batch: true, totalFee: true },
+    orderBy: { name: "asc" },
   });
   return NextResponse.json(students);
 }

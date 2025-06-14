@@ -1,17 +1,19 @@
 import Link from "next/link";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
+import SearchBar from "./SearchBar";
 
 export default async function Header() {
   const session = await getServerSession(authOptions);
   return (
     <header className="bg-indigo-700 text-white">
-      <nav className="max-w-5xl mx-auto flex items-center justify-between p-4">
+      <nav className="max-w-5xl mx-auto flex flex-wrap items-center justify-between p-4 gap-4">
         <Link href="/" className="font-semibold text-lg leading-tight">
           Jagannatha Group B.Ed Colleges
           <span className="block text-sm font-normal">Fee Portal</span>
         </Link>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 flex-wrap">
+          {session && <SearchBar />}
           {session && (
             <>
               <Link href="/students" className="hover:underline">Students</Link>

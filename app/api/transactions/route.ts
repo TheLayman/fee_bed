@@ -4,12 +4,15 @@ import { prisma } from "@/lib/prisma";
 import { authOptions } from "@/lib/auth";
 import { Prisma } from "@prisma/client";
 
-export async function GET() {
+export async function GET(req: Request) {
   const session = await getServerSession(authOptions);
   if (!session) {
     return new NextResponse("Unauthorized", { status: 403 });
   }
+  const url = new URL(req.url);
+  const studentId = url.searchParams.get("studentId") || undefined;
   const txns = await prisma.transaction.findMany({
+    where: studentId ? { studentId } : undefined,
     select: {
       id: true,
       studentId: true,
