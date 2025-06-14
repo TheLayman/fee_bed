@@ -12,7 +12,7 @@ export async function GET(req: Request) {
   const url = new URL(req.url);
   const q = url.searchParams.get("q") || undefined;
   const where = q
-    ? { name: { contains: q, mode: "insensitive" } }
+    ? { name: { contains: q, mode: Prisma.QueryMode.insensitive } }
     : undefined;
   const students = await prisma.student.findMany({
     where,

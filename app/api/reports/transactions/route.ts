@@ -19,7 +19,7 @@ export async function GET(req: Request) {
   if (name || batch) {
     where.student = {
       ...(name
-        ? { name: { contains: name, mode: "insensitive" } }
+        ? { name: { contains: name, mode: Prisma.QueryMode.insensitive } }
         : {}),
       ...(batch ? { batch } : {}),
     };
