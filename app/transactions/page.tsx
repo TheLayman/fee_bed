@@ -17,6 +17,7 @@ export default async function TransactionsPage() {
       id: true,
       studentId: true,
       student: { select: { name: true, batch: true } },
+      createdById: true,
       type: true,
       amount: true,
       mode: true,
@@ -35,6 +36,7 @@ export default async function TransactionsPage() {
       students={students}
       initialTransactions={transactions}
       isAdmin={session.user.role === "admin"}
+      userId={session.user.id}
     />
   );
 }
