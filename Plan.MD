@@ -31,7 +31,7 @@ The project aims to implement a complete fee management system for students. Bel
 - Protect edit and delete actions with role checks for admins.
 :::
 
-## Phase 4 – Transactions & Concessions *(pending)*
+## Phase 4 – Transactions & Concessions *(done)*
 - Record payments and concessions in the `Transaction` table. Concessions require admin approval.
 
 :::task-stub{title="Add transaction handling"}

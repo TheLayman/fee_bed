@@ -31,9 +31,17 @@ export default async function Home() {
             <Link className="underline" href="/students">
               Students
             </Link>
+            <Link className="underline" href="/transactions">
+              Transactions
+            </Link>
             {session.user?.role === "admin" && (
               <Link className="underline" href="/users">
                 Users
+              </Link>
+            )}
+            {session.user?.role === "admin" && (
+              <Link className="underline" href="/approvals">
+                Approvals
               </Link>
             )}
           </>
