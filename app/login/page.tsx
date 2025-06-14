@@ -14,7 +14,9 @@ export default function Login() {
         }}
         className="w-80 space-y-4 border p-6 rounded"
       >
-        <h1 className="text-xl font-bold text-center">Fee Portal – Login</h1>
+        <h1 className="text-xl font-bold text-center">
+          Jagannatha Group Fee Portal – Login
+        </h1>
         <input
           placeholder="Username"
           className="input input-bordered w-full"
