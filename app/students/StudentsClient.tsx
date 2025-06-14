@@ -66,15 +66,22 @@ export default function StudentsClient({
       const [n, b, a] = r.split(",");
       return { name: n?.trim(), batch: b?.trim(), totalFee: a?.trim() };
     });
-    const res = await fetch("/api/students/import", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ students }),
-    });
-    if (!res.ok) {
-      const text = await res.text();
-      setImportError(text);
-      alert(text);
+    try {
+      const res = await fetch("/api/students/import", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ students }),
+      });
+      if (!res.ok) {
+        const text = await res.text();
+        setImportError(text);
+        alert(`Import failed: ${text}`);
+        return;
+      }
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err);
+      setImportError(msg);
+      alert(`Import failed: ${msg}`);
       return;
     }
     setCsvFile(null);
