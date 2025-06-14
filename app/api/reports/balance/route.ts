@@ -23,7 +23,9 @@ export async function GET(req: Request) {
   } else {
     students = await prisma.student.findMany({
       where: {
-        ...(name ? { name } : {}),
+        ...(name
+          ? { name: { contains: name, mode: "insensitive" } }
+          : {}),
         ...(batch ? { batch } : {}),
       },
       select: { id: true, name: true, batch: true, totalFee: true },

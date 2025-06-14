@@ -25,6 +25,8 @@ export default function StudentsClient({
   const [editBatch, setEditBatch] = useState("");
   const [editTotalFee, setEditTotalFee] = useState("");
   const [editError, setEditError] = useState<string | null>(null);
+  const [csvFile, setCsvFile] = useState<File | null>(null);
+  const [importError, setImportError] = useState<string | null>(null);
 
   async function refresh() {
     const res = await fetch("/api/students");
@@ -51,6 +53,32 @@ export default function StudentsClient({
     setName("");
     setBatch("");
     setTotalFee("");
+    refresh();
+  }
+
+  async function importStudents(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    if (!csvFile) return;
+    setImportError(null);
+    const text = await csvFile.text();
+    const rows = text.trim().split(/\r?\n/);
+    const students = rows.map((r) => {
+      const [n, b, a] = r.split(",");
+      return { name: n?.trim(), batch: b?.trim(), totalFee: a?.trim() };
+    });
+    const res = await fetch("/api/students/import", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ students }),
+    });
+    if (!res.ok) {
+      const text = await res.text();
+      setImportError(text);
+      alert(text);
+      return;
+    }
+    setCsvFile(null);
+    (e.target as HTMLFormElement).reset();
     refresh();
   }
 
@@ -117,6 +145,18 @@ export default function StudentsClient({
           Add Student
         </button>
         {error && <p className="text-red-600">{error}</p>}
+      </form>
+      <form onSubmit={importStudents} className="space-y-2 border p-4 rounded">
+        <input
+          type="file"
+          accept=".csv"
+          className="w-full"
+          onChange={(e) => setCsvFile(e.target.files?.[0] || null)}
+        />
+        <button className="px-4 py-2 bg-blue-600 text-white rounded" type="submit">
+          Import CSV
+        </button>
+        {importError && <p className="text-red-600">{importError}</p>}
       </form>
       <ul className="space-y-2">
         {students.map((s) => (
