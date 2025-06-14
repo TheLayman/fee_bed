@@ -18,7 +18,9 @@ export async function GET(req: Request) {
   const where: Prisma.TransactionWhereInput = {};
   if (name || batch) {
     where.student = {
-      ...(name ? { name } : {}),
+      ...(name
+        ? { name: { contains: name, mode: "insensitive" } }
+        : {}),
       ...(batch ? { batch } : {}),
     };
   }
