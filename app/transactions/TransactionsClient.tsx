@@ -5,6 +5,7 @@ export type Transaction = {
   id: string;
   studentId: string;
   student: { name: string; batch: string };
+  createdById: string;
   type: string;
   amount: string;
   mode: string | null;
@@ -18,10 +19,12 @@ export default function TransactionsClient({
   students,
   initialTransactions,
   isAdmin,
+  userId,
 }: {
   students: Student[];
   initialTransactions: Transaction[];
   isAdmin: boolean;
+  userId: string;
 }) {
   const [transactions, setTransactions] = useState<Transaction[]>(
     initialTransactions
@@ -47,6 +50,12 @@ export default function TransactionsClient({
       body: JSON.stringify({ studentId, type, amount, mode }),
     });
     setAmount("");
+    refresh();
+  }
+
+  async function deleteTransaction(id: string) {
+    if (!confirm("Delete this transaction?")) return;
+    await fetch(`/api/transactions/${id}`, { method: "DELETE" });
     refresh();
   }
 
@@ -94,16 +103,34 @@ export default function TransactionsClient({
         </button>
       </form>
       <ul className="space-y-2">
-        {transactions.map((t) => (
-          <li key={t.id} className="border p-2 rounded">
-            <div className="flex justify-between">
-              <span>
-                {t.student.name} - {t.student.batch} : {t.type} {t.amount} {t.mode ? `(${t.mode})` : ""}
-              </span>
-              {!t.approved && t.type === "concession" && <span className="text-orange-600">Pending</span>}
-            </div>
-          </li>
-        ))}
+        {transactions.map((t) => {
+          const canDelete =
+            isAdmin ||
+            (t.createdById === userId &&
+              Date.now() - new Date(t.createdAt).getTime() < 5 * 60 * 1000);
+          return (
+            <li key={t.id} className="border p-2 rounded">
+              <div className="flex justify-between">
+                <span>
+                  {t.student.name} - {t.student.batch} : {t.type} {t.amount} {t.mode ? `(${t.mode})` : ""}
+                </span>
+                <div className="space-x-2">
+                  {!t.approved && t.type === "concession" && (
+                    <span className="text-orange-600">Pending</span>
+                  )}
+                  {canDelete && (
+                    <button
+                      onClick={() => deleteTransaction(t.id)}
+                      className="text-red-600"
+                    >
+                      Delete
+                    </button>
+                  )}
+                </div>
+              </div>
+            </li>
+          );
+        })}
       </ul>
     </div>
   );

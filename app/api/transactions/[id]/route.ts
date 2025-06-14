@@ -23,3 +23,33 @@ export async function PATCH(
   });
   return NextResponse.json(txn);
 }
+
+export async function DELETE(
+  _req: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const { id } = await params;
+  const session = await getServerSession(authOptions);
+  if (!session) {
+    return new NextResponse("Unauthorized", { status: 403 });
+  }
+  const txn = await prisma.transaction.findUnique({
+    where: { id },
+    select: { createdById: true, createdAt: true },
+  });
+  if (!txn) {
+    return new NextResponse("Not found", { status: 404 });
+  }
+  const isAdmin = session.user.role === "admin";
+  if (!isAdmin && txn.createdById !== session.user.id) {
+    return new NextResponse("Forbidden", { status: 403 });
+  }
+  if (!isAdmin) {
+    const age = Date.now() - txn.createdAt.getTime();
+    if (age > 5 * 60 * 1000) {
+      return new NextResponse("Too late to delete", { status: 400 });
+    }
+  }
+  await prisma.transaction.delete({ where: { id } });
+  return new NextResponse(null, { status: 204 });
+}
