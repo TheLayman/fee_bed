@@ -64,21 +64,21 @@ export default function StudentsClient() {
   return (
     <div className="p-6 space-y-6 max-w-xl mx-auto">
       <h1 className="text-xl font-bold">Students</h1>
-      <form onSubmit={addStudent} className="space-y-2 border p-4 rounded">
+      <form onSubmit={addStudent} className="space-y-2 border p-4 rounded bg-white dark:bg-gray-900">
         <input
-          className="w-full border p-2 rounded text-black"
+          className="w-full border p-2 rounded bg-white text-black dark:bg-gray-800 dark:text-white"
           placeholder="Name"
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
         <input
-          className="w-full border p-2 rounded text-black"
+          className="w-full border p-2 rounded bg-white text-black dark:bg-gray-800 dark:text-white"
           placeholder="Batch"
           value={batch}
           onChange={(e) => setBatch(e.target.value)}
         />
         <input
-          className="w-full border p-2 rounded text-black"
+          className="w-full border p-2 rounded bg-white text-black dark:bg-gray-800 dark:text-white"
           placeholder="Total Fee"
           value={totalFee}
           onChange={(e) => setTotalFee(e.target.value)}
@@ -88,7 +88,7 @@ export default function StudentsClient() {
         </button>
         {error && <p className="text-red-600">{error}</p>}
       </form>
-      <form onSubmit={importStudents} className="space-y-2 border p-4 rounded">
+      <form onSubmit={importStudents} className="space-y-2 border p-4 rounded bg-white dark:bg-gray-900">
         <input
           type="file"
           accept=".csv"

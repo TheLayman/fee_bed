@@ -97,21 +97,21 @@ export default function StudentClient({
         )}
       </h1>
       {editingProfile && (
-        <form onSubmit={updateProfile} className="space-y-2 border p-4 rounded">
+        <form onSubmit={updateProfile} className="space-y-2 border p-4 rounded bg-white dark:bg-gray-900">
           <input
-            className="w-full border p-2 rounded text-black"
+            className="w-full border p-2 rounded bg-white text-black dark:bg-gray-800 dark:text-white"
             placeholder="Name"
             value={editName}
             onChange={(e) => setEditName(e.target.value)}
           />
           <input
-            className="w-full border p-2 rounded text-black"
+            className="w-full border p-2 rounded bg-white text-black dark:bg-gray-800 dark:text-white"
             placeholder="Batch"
             value={editBatch}
             onChange={(e) => setEditBatch(e.target.value)}
           />
           <input
-            className="w-full border p-2 rounded text-black"
+            className="w-full border p-2 rounded bg-white text-black dark:bg-gray-800 dark:text-white"
             placeholder="Total Fee"
             value={editTotalFee}
             onChange={(e) => setEditTotalFee(e.target.value)}
@@ -130,9 +130,9 @@ export default function StudentClient({
           </div>
         </form>
       )}
-      <form onSubmit={addTransaction} className="space-y-2 border p-4 rounded">
+      <form onSubmit={addTransaction} className="space-y-2 border p-4 rounded bg-white dark:bg-gray-900">
         <select
-          className="w-full border p-2 rounded text-black"
+          className="w-full border p-2 rounded bg-white text-black dark:bg-gray-800 dark:text-white"
           value={type}
           onChange={(e) => setType(e.target.value)}
         >
@@ -140,14 +140,14 @@ export default function StudentClient({
           <option value="concession">concession</option>
         </select>
         <input
-          className="w-full border p-2 rounded text-black"
+          className="w-full border p-2 rounded bg-white text-black dark:bg-gray-800 dark:text-white"
           placeholder="Amount"
           value={amount}
           onChange={(e) => setAmount(e.target.value)}
         />
         {type === "payment" && (
           <select
-            className="w-full border p-2 rounded text-black"
+            className="w-full border p-2 rounded bg-white text-black dark:bg-gray-800 dark:text-white"
             value={mode}
             onChange={(e) => setMode(e.target.value)}
           >

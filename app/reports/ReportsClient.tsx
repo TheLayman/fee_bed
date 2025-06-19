@@ -121,10 +121,10 @@ export default function ReportsClient({ students }: { students: Student[] }) {
 
       {reportType === "balance" && (
         <>
-          <form onSubmit={getBalances} className="space-y-2 border p-4 rounded">
+          <form onSubmit={getBalances} className="space-y-2 border p-4 rounded bg-white dark:bg-gray-900">
             <h2 className="font-semibold">Student Balances</h2>
             <select
-              className="w-full border p-2 rounded text-black"
+              className="w-full border p-2 rounded bg-white text-black dark:bg-gray-800 dark:text-white"
               value={batch}
               onChange={(e) => setBatch(e.target.value)}
             >
@@ -136,7 +136,7 @@ export default function ReportsClient({ students }: { students: Student[] }) {
               ))}
             </select>
             <input
-              className="w-full border p-2 rounded text-black"
+              className="w-full border p-2 rounded bg-white text-black dark:bg-gray-800 dark:text-white"
               placeholder="Name (optional)"
               value={name}
               onChange={(e) => setName(e.target.value)}
@@ -201,10 +201,10 @@ export default function ReportsClient({ students }: { students: Student[] }) {
 
       {reportType === "transactions" && (
         <>
-          <form onSubmit={getTransactions} className="space-y-2 border p-4 rounded">
+          <form onSubmit={getTransactions} className="space-y-2 border p-4 rounded bg-white dark:bg-gray-900">
             <h2 className="font-semibold">Transactions</h2>
             <select
-              className="w-full border p-2 rounded text-black"
+              className="w-full border p-2 rounded bg-white text-black dark:bg-gray-800 dark:text-white"
               value={tBatch}
               onChange={(e) => setTBatch(e.target.value)}
             >
@@ -216,7 +216,7 @@ export default function ReportsClient({ students }: { students: Student[] }) {
               ))}
             </select>
             <input
-              className="w-full border p-2 rounded text-black"
+              className="w-full border p-2 rounded bg-white text-black dark:bg-gray-800 dark:text-white"
               placeholder="Name (optional)"
               value={tName}
               onChange={(e) => setTName(e.target.value)}
@@ -224,13 +224,13 @@ export default function ReportsClient({ students }: { students: Student[] }) {
             <div className="flex gap-2">
               <input
                 type="date"
-                className="w-full border p-2 rounded text-black"
+                className="w-full border p-2 rounded bg-white text-black dark:bg-gray-800 dark:text-white"
                 value={start}
                 onChange={(e) => setStart(e.target.value)}
               />
               <input
                 type="date"
-                className="w-full border p-2 rounded text-black"
+                className="w-full border p-2 rounded bg-white text-black dark:bg-gray-800 dark:text-white"
                 value={end}
                 onChange={(e) => setEnd(e.target.value)}
               />
