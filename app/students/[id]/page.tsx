@@ -43,6 +43,7 @@ export default async function StudentPage({
       student={{ ...student, totalFee: student.totalFee.toString() }}
       initialTransactions={transactions}
       isAdmin={session.user.role === "admin"}
+      userId={session.user.id}
     />
   );
 }
