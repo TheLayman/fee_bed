@@ -19,18 +19,18 @@ export default function Login() {
         </h1>
         <input
           placeholder="Username"
-          className="w-full border p-2 rounded bg-white text-black dark:bg-gray-800 dark:text-white"
+          className="w-full border p-2 rounded bg-white text-black dark:bg-gray-800 dark:text-gray-100"
           value={username}
           onChange={(e) => setU(e.target.value)}
         />
         <input
           type="password"
           placeholder="Password"
-          className="w-full border p-2 rounded bg-white text-black dark:bg-gray-800 dark:text-white"
+          className="w-full border p-2 rounded bg-white text-black dark:bg-gray-800 dark:text-gray-100"
           value={password}
           onChange={(e) => setP(e.target.value)}
         />
-        <button className="w-full px-4 py-2 bg-blue-600 text-white rounded">
+        <button className="w-full px-4 py-2 rounded bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-600 text-white">
           Sign in
         </button>
       </form>

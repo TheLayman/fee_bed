@@ -66,19 +66,19 @@ export default function StudentsClient() {
       <h1 className="text-xl font-bold">Students</h1>
       <form onSubmit={addStudent} className="space-y-2 border p-4 rounded bg-white dark:bg-gray-900">
         <input
-          className="w-full border p-2 rounded bg-white text-black dark:bg-gray-800 dark:text-white"
+          className="w-full border p-2 rounded bg-white text-black dark:bg-gray-800 dark:text-gray-100"
           placeholder="Name"
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
         <input
-          className="w-full border p-2 rounded bg-white text-black dark:bg-gray-800 dark:text-white"
+          className="w-full border p-2 rounded bg-white text-black dark:bg-gray-800 dark:text-gray-100"
           placeholder="Batch"
           value={batch}
           onChange={(e) => setBatch(e.target.value)}
         />
         <input
-          className="w-full border p-2 rounded bg-white text-black dark:bg-gray-800 dark:text-white"
+          className="w-full border p-2 rounded bg-white text-black dark:bg-gray-800 dark:text-gray-100"
           placeholder="Total Fee"
           value={totalFee}
           onChange={(e) => setTotalFee(e.target.value)}

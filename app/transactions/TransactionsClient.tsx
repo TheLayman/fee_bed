@@ -64,7 +64,7 @@ export default function TransactionsClient({
       <h1 className="text-xl font-bold">Transactions</h1>
       <form onSubmit={addTransaction} className="space-y-2 border p-4 rounded bg-white dark:bg-gray-900">
         <select
-          className="w-full border p-2 rounded bg-white text-black dark:bg-gray-800 dark:text-white"
+          className="w-full border p-2 rounded bg-white text-black dark:bg-gray-800 dark:text-gray-100"
           value={studentId}
           onChange={(e) => setStudentId(e.target.value)}
         >
@@ -75,7 +75,7 @@ export default function TransactionsClient({
           ))}
         </select>
         <select
-          className="w-full border p-2 rounded bg-white text-black dark:bg-gray-800 dark:text-white"
+          className="w-full border p-2 rounded bg-white text-black dark:bg-gray-800 dark:text-gray-100"
           value={type}
           onChange={(e) => setType(e.target.value)}
         >
@@ -83,14 +83,14 @@ export default function TransactionsClient({
           <option value="concession">concession</option>
         </select>
         <input
-          className="w-full border p-2 rounded bg-white text-black dark:bg-gray-800 dark:text-white"
+          className="w-full border p-2 rounded bg-white text-black dark:bg-gray-800 dark:text-gray-100"
           placeholder="Amount"
           value={amount}
           onChange={(e) => setAmount(e.target.value)}
         />
         {type === "payment" && (
           <select
-            className="w-full border p-2 rounded bg-white text-black dark:bg-gray-800 dark:text-white"
+            className="w-full border p-2 rounded bg-white text-black dark:bg-gray-800 dark:text-gray-100"
             value={mode}
             onChange={(e) => setMode(e.target.value)}
           >
