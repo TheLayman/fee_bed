@@ -51,6 +51,7 @@ export async function GET(req: Request) {
     ...t,
     amount: t.amount.toString(),
     createdAt: t.createdAt.toISOString(),
+    mode: t.type === "concession" ? "concession" : t.mode,
   }));
 
   const modeTotalsRaw = await prisma.transaction.groupBy({
@@ -63,5 +64,11 @@ export async function GET(req: Request) {
     amount: m._sum.amount?.toString() || "0",
   }));
 
-  return NextResponse.json({ transactions, totals });
+  const concessionAgg = await prisma.transaction.aggregate({
+    where: { ...where, type: "concession" },
+    _sum: { amount: true },
+  });
+  const concessionTotal = concessionAgg._sum.amount?.toString() || "0";
+
+  return NextResponse.json({ transactions, totals, concessionTotal });
 }
