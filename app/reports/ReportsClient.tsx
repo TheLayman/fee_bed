@@ -127,14 +127,14 @@ export default function ReportsClient({ students }: { students: Student[] }) {
         <button
           type="button"
           onClick={() => setReportType("balance")}
-          className={`px-4 py-2 rounded ${reportType === "balance" ? "bg-blue-600 text-white" : "bg-gray-200 text-black dark:bg-gray-700 dark:text-white"}`}
+          className={`px-4 py-2 rounded ${reportType === "balance" ? "bg-blue-600 text-white" : "bg-gray-200 text-black dark:bg-gray-700 dark:text-gray-100"}`}
         >
           Balance Reports
         </button>
         <button
           type="button"
           onClick={() => setReportType("transactions")}
-          className={`px-4 py-2 rounded ${reportType === "transactions" ? "bg-blue-600 text-white" : "bg-gray-200 text-black dark:bg-gray-700 dark:text-white"}`}
+          className={`px-4 py-2 rounded ${reportType === "transactions" ? "bg-blue-600 text-white" : "bg-gray-200 text-black dark:bg-gray-700 dark:text-gray-100"}`}
         >
           Transaction Reports
         </button>
@@ -145,7 +145,7 @@ export default function ReportsClient({ students }: { students: Student[] }) {
           <form onSubmit={getBalances} className="space-y-2 border p-4 rounded bg-white dark:bg-gray-900">
             <h2 className="font-semibold">Student Balances</h2>
             <select
-              className="w-full border p-2 rounded bg-white text-black dark:bg-gray-800 dark:text-white"
+              className="w-full border p-2 rounded bg-white text-black dark:bg-gray-800 dark:text-gray-100"
               value={batch}
               onChange={(e) => setBatch(e.target.value)}
             >
@@ -157,7 +157,7 @@ export default function ReportsClient({ students }: { students: Student[] }) {
               ))}
             </select>
             <input
-              className="w-full border p-2 rounded bg-white text-black dark:bg-gray-800 dark:text-white"
+              className="w-full border p-2 rounded bg-white text-black dark:bg-gray-800 dark:text-gray-100"
               placeholder="Name (optional)"
               value={name}
               onChange={(e) => setName(e.target.value)}
@@ -225,7 +225,7 @@ export default function ReportsClient({ students }: { students: Student[] }) {
           <form onSubmit={getTransactions} className="space-y-2 border p-4 rounded bg-white dark:bg-gray-900">
             <h2 className="font-semibold">Transactions</h2>
             <select
-              className="w-full border p-2 rounded bg-white text-black dark:bg-gray-800 dark:text-white"
+              className="w-full border p-2 rounded bg-white text-black dark:bg-gray-800 dark:text-gray-100"
               value={tBatch}
               onChange={(e) => setTBatch(e.target.value)}
             >
@@ -237,7 +237,7 @@ export default function ReportsClient({ students }: { students: Student[] }) {
               ))}
             </select>
             <input
-              className="w-full border p-2 rounded bg-white text-black dark:bg-gray-800 dark:text-white"
+              className="w-full border p-2 rounded bg-white text-black dark:bg-gray-800 dark:text-gray-100"
               placeholder="Name (optional)"
               value={tName}
               onChange={(e) => setTName(e.target.value)}
@@ -245,13 +245,13 @@ export default function ReportsClient({ students }: { students: Student[] }) {
             <div className="flex gap-2">
               <input
                 type="date"
-                className="w-full border p-2 rounded bg-white text-black dark:bg-gray-800 dark:text-white"
+                className="w-full border p-2 rounded bg-white text-black dark:bg-gray-800 dark:text-gray-100"
                 value={start}
                 onChange={(e) => setStart(e.target.value)}
               />
               <input
                 type="date"
-                className="w-full border p-2 rounded bg-white text-black dark:bg-gray-800 dark:text-white"
+                className="w-full border p-2 rounded bg-white text-black dark:bg-gray-800 dark:text-gray-100"
                 value={end}
                 onChange={(e) => setEnd(e.target.value)}
               />
@@ -263,43 +263,43 @@ export default function ReportsClient({ students }: { students: Student[] }) {
           {transactions.length > 0 ? (
             <table className="min-w-full border mt-2">
               <thead>
-                <tr className="bg-gray-100">
-                  <th className="border px-2 py-1 text-left">S.No.</th>
-                  <th className="border px-2 py-1 text-left">Date</th>
-                  <th className="border px-2 py-1 text-left">Name</th>
-                  <th className="border px-2 py-1 text-left">Batch</th>
-                  <th className="border px-2 py-1 text-left">Amount</th>
-                  <th className="border px-2 py-1 text-left">Payment Mode</th>
+                <tr className="bg-gray-100 dark:bg-gray-800">
+                  <th className="border px-2 py-1 text-left text-black dark:text-gray-200">S.No.</th>
+                  <th className="border px-2 py-1 text-left text-black dark:text-gray-200">Date</th>
+                  <th className="border px-2 py-1 text-left text-black dark:text-gray-200">Name</th>
+                  <th className="border px-2 py-1 text-left text-black dark:text-gray-200">Batch</th>
+                  <th className="border px-2 py-1 text-left text-black dark:text-gray-200">Amount</th>
+                  <th className="border px-2 py-1 text-left text-black dark:text-gray-200">Payment Mode</th>
                 </tr>
               </thead>
               <tbody>
                 {transactions.map((t, i) => (
-                  <tr key={t.id} className="odd:bg-white even:bg-gray-50">
-                    <td className="border px-2 py-1">{i + 1}</td>
-                    <td className="border px-2 py-1">
+                  <tr key={t.id} className="odd:bg-white even:bg-gray-50 dark:odd:bg-gray-800 dark:even:bg-gray-700">
+                    <td className="border px-2 py-1 text-black dark:text-gray-200">{i + 1}</td>
+                    <td className="border px-2 py-1 text-black dark:text-gray-200">
                       {t.createdAt.slice(0, 10)}
                     </td>
-                    <td className="border px-2 py-1">{t.student.name}</td>
-                    <td className="border px-2 py-1">{t.student.batch}</td>
-                    <td className="border px-2 py-1">{t.amount}</td>
-                    <td className="border px-2 py-1">{t.mode}</td>
+                    <td className="border px-2 py-1 text-black dark:text-gray-200">{t.student.name}</td>
+                    <td className="border px-2 py-1 text-black dark:text-gray-200">{t.student.batch}</td>
+                    <td className="border px-2 py-1 text-black dark:text-gray-200">{t.amount}</td>
+                    <td className="border px-2 py-1 text-black dark:text-gray-200">{t.mode}</td>
                   </tr>
                 ))}
               </tbody>
               <tfoot>
                 {totals.map((t) => (
                   <tr key={t.mode} className="font-semibold">
-                    <td className="border px-2 py-1" colSpan={5}>
+                    <td className="border px-2 py-1 text-black dark:text-gray-200" colSpan={5}>
                       Total {t.mode}
                     </td>
-                    <td className="border px-2 py-1">{t.amount}</td>
+                    <td className="border px-2 py-1 text-black dark:text-gray-200">{t.amount}</td>
                   </tr>
                 ))}
                 <tr className="font-semibold">
-                  <td className="border px-2 py-1" colSpan={5}>
+                  <td className="border px-2 py-1 text-black dark:text-gray-200" colSpan={5}>
                     Total
                   </td>
-                  <td className="border px-2 py-1">
+                  <td className="border px-2 py-1 text-black dark:text-gray-200">
                     {transactions
                       .reduce((sum, t) => sum + parseFloat(t.amount), 0)
                       .toFixed(2)}

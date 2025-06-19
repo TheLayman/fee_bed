@@ -73,20 +73,20 @@ export default function UsersClient({
       <h1 className="text-xl font-bold">Users</h1>
       <form onSubmit={addUser} className="space-y-2 border p-4 rounded bg-white dark:bg-gray-900">
         <input
-          className="w-full border p-2 rounded bg-white text-black dark:bg-gray-800 dark:text-white"
+          className="w-full border p-2 rounded bg-white text-black dark:bg-gray-800 dark:text-gray-100"
           placeholder="Username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
         />
         <input
           type="password"
-          className="w-full border p-2 rounded bg-white text-black dark:bg-gray-800 dark:text-white"
+          className="w-full border p-2 rounded bg-white text-black dark:bg-gray-800 dark:text-gray-100"
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
         <select
-          className="w-full border p-2 rounded bg-white text-black dark:bg-gray-800 dark:text-white"
+          className="w-full border p-2 rounded bg-white text-black dark:bg-gray-800 dark:text-gray-100"
           value={role}
           onChange={(e) => setRole(e.target.value)}
         >
@@ -103,20 +103,20 @@ export default function UsersClient({
             {editing && editing.id === u.id ? (
               <form onSubmit={updateUser} className="space-y-2">
                 <input
-                  className="w-full border p-2 rounded bg-white text-black dark:bg-gray-800 dark:text-white"
+                  className="w-full border p-2 rounded bg-white text-black dark:bg-gray-800 dark:text-gray-100"
                   placeholder="Username"
                   value={editUsername}
                   onChange={(e) => setEditUsername(e.target.value)}
                 />
                 <input
                   type="password"
-                  className="w-full border p-2 rounded bg-white text-black dark:bg-gray-800 dark:text-white"
+                  className="w-full border p-2 rounded bg-white text-black dark:bg-gray-800 dark:text-gray-100"
                   placeholder="Password (leave blank to keep)"
                   value={editPassword}
                   onChange={(e) => setEditPassword(e.target.value)}
                 />
                 <select
-                  className="w-full border p-2 rounded bg-white text-black dark:bg-gray-800 dark:text-white"
+                  className="w-full border p-2 rounded bg-white text-black dark:bg-gray-800 dark:text-gray-100"
                   value={editRole}
                   onChange={(e) => setEditRole(e.target.value)}
                 >
@@ -130,7 +130,7 @@ export default function UsersClient({
                   <button
                     type="button"
                     onClick={() => setEditing(null)}
-                    className="px-4 py-2 bg-gray-300 dark:bg-gray-700 rounded text-black dark:text-white"
+                    className="px-4 py-2 bg-gray-300 hover:bg-gray-400 dark:bg-gray-700 dark:hover:bg-gray-600 rounded text-black dark:text-gray-100"
                   >
                     Cancel
                   </button>
