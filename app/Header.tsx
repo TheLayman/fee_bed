@@ -17,7 +17,6 @@ export default async function Header() {
           {session && (
             <>
               <Link href="/students" className="hover:underline">Students</Link>
-              <Link href="/transactions" className="hover:underline">Transactions</Link>
               <Link href="/reports" className="hover:underline">Reports</Link>
               {session.user.role === "admin" && (
                 <>
