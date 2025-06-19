@@ -56,34 +56,40 @@ export default function ReportsClient({ students }: { students: Student[] }) {
 
   function downloadTransactionsPdf() {
     const doc = new jsPDF();
-    doc.text("Transactions", 10, 10);
-    let y = 20;
-    doc.text("S.No.", 10, y);
-    doc.text("Date", 30, y);
-    doc.text("Name", 60, y);
-    doc.text("Batch", 100, y);
-    doc.text("Amount", 130, y);
-    doc.text("Mode", 160, y);
-    y += 10;
-    transactions.forEach((t, i) => {
-      doc.text(String(i + 1), 10, y);
-      doc.text(t.createdAt.slice(0, 10), 30, y);
-      doc.text(t.student.name, 60, y);
-      doc.text(t.student.batch, 100, y);
-      doc.text(t.amount, 130, y);
-      doc.text(t.mode || "", 160, y);
-      y += 10;
-    });
-    totals.forEach((t) => {
-      doc.text(`Total ${t.mode}`, 60, y);
-      doc.text(t.amount, 130, y);
-      y += 10;
-    });
-    const totalAmount = transactions
-      .reduce((sum, t) => sum + parseFloat(t.amount), 0)
-      .toFixed(2);
-    doc.text("Total", 60, y);
-    doc.text(totalAmount, 130, y);
+    doc.text("Transactions", 14, 10);
+    if (transactions.length > 0) {
+      const totalAmount = transactions
+        .reduce((sum, t) => sum + parseFloat(t.amount), 0)
+        .toFixed(2);
+      const footRows = [
+        ...totals.map((t) => [
+          { content: `Total ${t.mode}`, colSpan: 5 },
+          t.amount,
+        ]),
+        [{ content: "Total", colSpan: 5 }, totalAmount],
+      ];
+      autoTable(doc, {
+        head: [[
+          "S.No.",
+          "Date",
+          "Name",
+          "Batch",
+          "Amount",
+          "Payment Mode",
+        ]],
+        body: transactions.map((t, i) => [
+          i + 1,
+          t.createdAt.slice(0, 10),
+          t.student.name,
+          t.student.batch,
+          t.amount,
+          t.mode || "",
+        ]),
+        foot: footRows,
+        startY: 20,
+        theme: "grid",
+      });
+    }
     doc.save("transactions.pdf");
   }
 
