@@ -7,9 +7,9 @@ import { Prisma } from "@prisma/client";
 
 export async function DELETE(
   request: Request,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: { id: string } }
 ) {
-  const { id } = await params;
+  const { id } = params;
   const session = await getServerSession(authOptions);
   if (!session || session.user.role !== "admin") {
     return new NextResponse("Unauthorized", { status: 403 });
@@ -20,9 +20,9 @@ export async function DELETE(
 
 export async function PUT(
   req: Request,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: { id: string } }
 ) {
-  const { id } = await params;
+  const { id } = params;
   const session = await getServerSession(authOptions);
   if (!session || session.user.role !== "admin") {
     return new NextResponse("Unauthorized", { status: 403 });

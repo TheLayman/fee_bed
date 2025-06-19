@@ -5,9 +5,9 @@ import { authOptions } from "@/lib/auth";
 
 export async function PATCH(
   req: Request,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: { id: string } }
 ) {
-  const { id } = await params;
+  const { id } = params;
   const session = await getServerSession(authOptions);
   if (!session || session.user.role !== "admin") {
     return new NextResponse("Unauthorized", { status: 403 });
@@ -26,9 +26,9 @@ export async function PATCH(
 
 export async function PUT(
   req: Request,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: { id: string } }
 ) {
-  const { id } = await params;
+  const { id } = params;
   const session = await getServerSession(authOptions);
   if (!session || session.user.role !== "admin") {
     return new NextResponse("Unauthorized", { status: 403 });
@@ -72,9 +72,9 @@ export async function PUT(
 
 export async function DELETE(
   _req: Request,
-  { params }: { params: Promise<{ id: string }> }
+  { params }: { params: { id: string } }
 ) {
-  const { id } = await params;
+  const { id } = params;
   const session = await getServerSession(authOptions);
   if (!session) {
     return new NextResponse("Unauthorized", { status: 403 });
