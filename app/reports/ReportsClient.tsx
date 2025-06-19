@@ -12,7 +12,13 @@ export type Transaction = {
   approved: boolean;
   createdAt: string;
 };
-export type Balance = { id: string; name: string; batch: string; balance: string };
+export type Balance = {
+  id: string;
+  name: string;
+  batch: string;
+  totalFee: string;
+  balance: string;
+};
 
 export default function ReportsClient({ students }: { students: Student[] }) {
   const batches = Array.from(new Set(students.map((s) => s.batch)));
@@ -34,8 +40,19 @@ export default function ReportsClient({ students }: { students: Student[] }) {
     const doc = new jsPDF();
     doc.text("Student Balances", 10, 10);
     balances.forEach((b, i) => {
-      doc.text(`${b.name} - ${b.batch}: ${b.balance}`, 10, 20 + i * 10);
+      const line = `${i + 1}. ${b.name} - ${b.batch}: Fee ${b.totalFee} Balance ${b.balance}`;
+      doc.text(line, 10, 20 + i * 10);
     });
+    if (balances.length > 0) {
+      const totalFee = balances
+        .reduce((sum, b) => sum + parseFloat(b.totalFee), 0)
+        .toFixed(2);
+      const totalBal = balances
+        .reduce((sum, b) => sum + parseFloat(b.balance), 0)
+        .toFixed(2);
+      const y = 20 + balances.length * 10 + 10;
+      doc.text(`Total  ${totalFee}  ${totalBal}`, 10, y);
+    }
     doc.save("balances.pdf");
   }
 
@@ -128,22 +145,56 @@ export default function ReportsClient({ students }: { students: Student[] }) {
               Get Balances
             </button>
           </form>
-          <ul className="space-y-1">
-            {balances.map((b) => (
-              <li key={b.id} className="border p-2 rounded">
-                {b.name} - {b.batch}: {b.balance}
-              </li>
-            ))}
-            {balances.length === 0 && <p>No results</p>}
-          </ul>
+          {balances.length === 0 && <p>No results</p>}
           {balances.length > 0 && (
-            <button
-              type="button"
-              onClick={downloadBalancesPdf}
-              className="px-4 py-2 bg-green-600 text-white rounded"
-            >
-              Download PDF
-            </button>
+            <>
+              <table className="min-w-full border">
+                <thead>
+                  <tr className="bg-gray-100">
+                    <th className="border px-2 py-1 text-left">S.No.</th>
+                    <th className="border px-2 py-1 text-left">Name</th>
+                    <th className="border px-2 py-1 text-left">Batch</th>
+                    <th className="border px-2 py-1 text-left">Total Fee</th>
+                    <th className="border px-2 py-1 text-left">Balance</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {balances.map((b, i) => (
+                    <tr key={b.id} className="odd:bg-white even:bg-gray-50">
+                      <td className="border px-2 py-1">{i + 1}</td>
+                      <td className="border px-2 py-1">{b.name}</td>
+                      <td className="border px-2 py-1">{b.batch}</td>
+                      <td className="border px-2 py-1">{b.totalFee}</td>
+                      <td className="border px-2 py-1">{b.balance}</td>
+                    </tr>
+                  ))}
+                </tbody>
+                <tfoot>
+                  <tr className="font-semibold">
+                    <td className="border px-2 py-1" colSpan={3}>
+                      Total
+                    </td>
+                    <td className="border px-2 py-1">
+                      {balances
+                        .reduce((sum, b) => sum + parseFloat(b.totalFee), 0)
+                        .toFixed(2)}
+                    </td>
+                    <td className="border px-2 py-1">
+                      {balances
+                        .reduce((sum, b) => sum + parseFloat(b.balance), 0)
+                        .toFixed(2)}
+                    </td>
+                  </tr>
+                </tfoot>
+              </table>
+              <button
+                type="button"
+                onClick={downloadBalancesPdf}
+                className="mt-2 px-4 py-2 bg-green-600 text-white rounded"
+              >
+                Download PDF
+              </button>
+            </>
           )}
         </>
       )}
