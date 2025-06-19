@@ -12,25 +12,27 @@ export default function Login() {
           e.preventDefault();
           signIn("credentials", { username, password, callbackUrl: "/" });
         }}
-        className="w-80 space-y-4 border p-6 rounded"
+        className="w-80 space-y-4 border p-6 rounded bg-white dark:bg-gray-900"
       >
         <h1 className="text-xl font-bold text-center">
           Jagannatha Group Fee Portal – Login
         </h1>
         <input
           placeholder="Username"
-          className="input input-bordered w-full"
+          className="w-full border p-2 rounded bg-white text-black dark:bg-gray-800 dark:text-white"
           value={username}
           onChange={(e) => setU(e.target.value)}
         />
         <input
           type="password"
           placeholder="Password"
-          className="input input-bordered w-full"
+          className="w-full border p-2 rounded bg-white text-black dark:bg-gray-800 dark:text-white"
           value={password}
           onChange={(e) => setP(e.target.value)}
         />
-        <button className="btn btn-primary w-full">Sign in</button>
+        <button className="w-full px-4 py-2 bg-blue-600 text-white rounded">
+          Sign in
+        </button>
       </form>
     </div>
   );
