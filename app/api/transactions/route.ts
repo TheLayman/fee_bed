@@ -55,7 +55,7 @@ export async function POST(req: Request) {
         studentId,
         createdById: session.user.id!,
         type,
-        amount: amount.toString(),
+        amount: Math.round(Number(amount)).toString(),
         mode: type === "payment" ? mode : null,
         approved: type === "payment" ? true : false,
       },

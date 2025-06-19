@@ -17,7 +17,7 @@ export async function PUT(
   try {
     const student = await prisma.student.update({
       where: { id },
-      data: { name, batch, totalFee: totalFee.toString() },
+      data: { name, batch, totalFee: Math.round(Number(totalFee)).toString() },
       select: { id: true, name: true, batch: true, totalFee: true },
     });
     return NextResponse.json(student);

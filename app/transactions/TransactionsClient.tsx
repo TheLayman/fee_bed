@@ -83,6 +83,8 @@ export default function TransactionsClient({
           <option value="concession">concession</option>
         </select>
         <input
+          type="number"
+          step="1"
           className="w-full border p-2 rounded bg-white text-black dark:bg-gray-800 dark:text-gray-100"
           placeholder="Amount"
           value={amount}
