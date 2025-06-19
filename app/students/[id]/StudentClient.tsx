@@ -23,10 +23,12 @@ export default function StudentClient({
   student,
   initialTransactions,
   isAdmin,
+  userId,
 }: {
   student: Student;
   initialTransactions: Transaction[];
   isAdmin: boolean;
+  userId: string;
 }) {
   const [transactions, setTransactions] = useState<Transaction[]>(initialTransactions);
   const [type, setType] = useState("payment");
@@ -163,23 +165,58 @@ export default function StudentClient({
           Add Transaction
         </button>
       </form>
-      <ul className="space-y-2">
-        {transactions.map((t) => (
-          <li key={t.id} className="border p-2 rounded flex justify-between">
-            <span>
-              {t.createdAt.slice(0, 10)} - {t.type} {t.amount} {t.mode ? `(${t.mode})` : ""}
-              {!t.approved && t.type === "concession" && (
-                <span className="text-orange-600"> Pending</span>
-              )}
-            </span>
-            {isAdmin && (
-              <button onClick={() => deleteTransaction(t.id)} className="text-red-600">
-                Delete
-              </button>
-            )}
-          </li>
-        ))}
-      </ul>
+      <h2 className="font-semibold">Previous Transactions</h2>
+      <table className="min-w-full border">
+        <thead>
+          <tr className="bg-gray-100 dark:bg-gray-800">
+            <th className="border px-2 py-1 text-left text-black dark:text-gray-200">Date</th>
+            <th className="border px-2 py-1 text-left text-black dark:text-gray-200">Type</th>
+            <th className="border px-2 py-1 text-left text-black dark:text-gray-200">Amount</th>
+            <th className="border px-2 py-1 text-left text-black dark:text-gray-200">Mode</th>
+            <th className="border px-2 py-1 text-left text-black dark:text-gray-200">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {transactions.map((t) => {
+            const canDelete =
+              isAdmin ||
+              (t.createdById === userId &&
+                Date.now() - new Date(t.createdAt).getTime() < 5 * 60 * 1000);
+            return (
+              <tr
+                key={t.id}
+                className="odd:bg-white even:bg-gray-50 dark:odd:bg-gray-800 dark:even:bg-gray-700"
+              >
+                <td className="border px-2 py-1 text-black dark:text-gray-200">
+                  {t.createdAt.slice(0, 10)}
+                </td>
+                <td className="border px-2 py-1 text-black dark:text-gray-200">
+                  {t.type}
+                </td>
+                <td className="border px-2 py-1 text-black dark:text-gray-200">
+                  {t.amount}
+                </td>
+                <td className="border px-2 py-1 text-black dark:text-gray-200">
+                  {t.mode ?? (t.type === "concession" ? "concession" : "")}
+                </td>
+                <td className="border px-2 py-1 text-black dark:text-gray-200 space-x-2">
+                  {!t.approved && t.type === "concession" && (
+                    <span className="text-orange-600">Pending</span>
+                  )}
+                  {canDelete && (
+                    <button
+                      onClick={() => deleteTransaction(t.id)}
+                      className="text-red-600"
+                    >
+                      Delete
+                    </button>
+                  )}
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
     </div>
   );
 }
