@@ -33,7 +33,7 @@ export async function POST(req: Request) {
   }
   try {
     const student = await prisma.student.create({
-      data: { name, batch, totalFee: totalFee.toString() },
+      data: { name, batch, totalFee: Math.round(Number(totalFee)).toString() },
       select: { id: true, name: true, batch: true, totalFee: true },
     });
     return NextResponse.json(student, { status: 201 });

@@ -17,7 +17,7 @@ export async function POST(req: Request) {
     .map((s: any) => ({
       name: s.name,
       batch: s.batch,
-      totalFee: s.totalFee.toString(),
+      totalFee: Math.round(Number(s.totalFee)).toString(),
     }));
   if (data.length === 0) {
     return new NextResponse("No valid students", { status: 400 });

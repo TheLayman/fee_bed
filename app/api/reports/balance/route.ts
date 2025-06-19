@@ -47,7 +47,7 @@ export async function GET(req: Request) {
     });
     const paid = parseFloat(agg._sum.amount?.toString() || "0");
     const total = parseFloat(s.totalFee.toString());
-    const bal = (total - paid).toFixed(2);
+    const bal = (total - paid).toFixed(0);
     results.push({
       id: s.id,
       name: s.name,

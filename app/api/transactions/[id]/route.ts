@@ -47,7 +47,7 @@ export async function PUT(
     where: { id },
     data: {
       type,
-      amount: amount.toString(),
+      amount: Math.round(Number(amount)).toString(),
       mode: type === "payment" ? mode : null,
       approved: type === "payment" ? true : false,
     },

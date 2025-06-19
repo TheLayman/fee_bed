@@ -78,6 +78,8 @@ export default function StudentsClient() {
           onChange={(e) => setBatch(e.target.value)}
         />
         <input
+          type="number"
+          step="1"
           className="w-full border p-2 rounded bg-white text-black dark:bg-gray-800 dark:text-gray-100"
           placeholder="Total Fee"
           value={totalFee}
