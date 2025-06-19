@@ -71,29 +71,29 @@ export default function UsersClient({
   return (
     <div className="p-6 space-y-6 max-w-xl mx-auto">
       <h1 className="text-xl font-bold">Users</h1>
-      <form onSubmit={addUser} className="space-y-2 border p-4 rounded">
+      <form onSubmit={addUser} className="space-y-2 card bg-base-100 p-4 shadow">
         <input
-          className="w-full border p-2 rounded"
+          className="input input-bordered w-full"
           placeholder="Username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
         />
         <input
           type="password"
-          className="w-full border p-2 rounded"
+          className="input input-bordered w-full"
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
         <select
-          className="w-full border p-2 rounded"
+          className="select select-bordered w-full"
           value={role}
           onChange={(e) => setRole(e.target.value)}
         >
           <option value="user">user</option>
           <option value="admin">admin</option>
         </select>
-        <button className="px-4 py-2 bg-blue-600 text-white rounded" type="submit">
+        <button className="btn btn-primary w-full" type="submit">
           Add User
         </button>
       </form>
@@ -103,20 +103,20 @@ export default function UsersClient({
             {editing && editing.id === u.id ? (
               <form onSubmit={updateUser} className="space-y-2">
                 <input
-                  className="w-full border p-2 rounded"
+                  className="input input-bordered w-full"
                   placeholder="Username"
                   value={editUsername}
                   onChange={(e) => setEditUsername(e.target.value)}
                 />
                 <input
                   type="password"
-                  className="w-full border p-2 rounded"
+                  className="input input-bordered w-full"
                   placeholder="Password (leave blank to keep)"
                   value={editPassword}
                   onChange={(e) => setEditPassword(e.target.value)}
                 />
                 <select
-                  className="w-full border p-2 rounded"
+                  className="select select-bordered w-full"
                   value={editRole}
                   onChange={(e) => setEditRole(e.target.value)}
                 >
@@ -124,13 +124,13 @@ export default function UsersClient({
                   <option value="admin">admin</option>
                 </select>
                 <div className="flex gap-2">
-                  <button className="px-4 py-2 bg-blue-600 text-white rounded" type="submit">
+                  <button className="btn btn-primary" type="submit">
                     Save
                   </button>
                   <button
                     type="button"
                     onClick={() => setEditing(null)}
-                    className="px-4 py-2 bg-gray-300 rounded"
+                    className="btn"
                   >
                     Cancel
                   </button>
@@ -144,13 +144,13 @@ export default function UsersClient({
                 <div className="space-x-2">
                   <button
                     onClick={() => startEdit(u)}
-                    className="text-blue-600"
+                    className="btn btn-xs btn-outline"
                   >
                     Edit
                   </button>
                   <button
                     onClick={() => deleteUser(u.id)}
-                    className="text-red-600"
+                    className="btn btn-xs btn-error"
                   >
                     Delete
                   </button>

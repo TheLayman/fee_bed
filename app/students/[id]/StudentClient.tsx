@@ -97,32 +97,32 @@ export default function StudentClient({
         )}
       </h1>
       {editingProfile && (
-        <form onSubmit={updateProfile} className="space-y-2 border p-4 rounded">
+        <form onSubmit={updateProfile} className="space-y-2 card bg-base-100 p-4 shadow">
           <input
-            className="w-full border p-2 rounded"
+            className="input input-bordered w-full"
             placeholder="Name"
             value={editName}
             onChange={(e) => setEditName(e.target.value)}
           />
           <input
-            className="w-full border p-2 rounded"
+            className="input input-bordered w-full"
             placeholder="Batch"
             value={editBatch}
             onChange={(e) => setEditBatch(e.target.value)}
           />
           <input
-            className="w-full border p-2 rounded"
+            className="input input-bordered w-full"
             placeholder="Total Fee"
             value={editTotalFee}
             onChange={(e) => setEditTotalFee(e.target.value)}
           />
           <div className="flex gap-2">
-            <button className="px-4 py-2 bg-blue-600 text-white rounded" type="submit">
+            <button className="btn btn-primary" type="submit">
               Save
             </button>
             <button
               type="button"
-              className="px-4 py-2 bg-gray-300 rounded"
+              className="btn"
               onClick={() => setEditingProfile(false)}
             >
               Cancel
@@ -130,9 +130,9 @@ export default function StudentClient({
           </div>
         </form>
       )}
-      <form onSubmit={addTransaction} className="space-y-2 border p-4 rounded">
+      <form onSubmit={addTransaction} className="space-y-2 card bg-base-100 p-4 shadow">
         <select
-          className="w-full border p-2 rounded"
+          className="select select-bordered w-full"
           value={type}
           onChange={(e) => setType(e.target.value)}
         >
@@ -140,14 +140,14 @@ export default function StudentClient({
           <option value="concession">concession</option>
         </select>
         <input
-          className="w-full border p-2 rounded"
+          className="input input-bordered w-full"
           placeholder="Amount"
           value={amount}
           onChange={(e) => setAmount(e.target.value)}
         />
         {type === "payment" && (
           <select
-            className="w-full border p-2 rounded"
+            className="select select-bordered w-full"
             value={mode}
             onChange={(e) => setMode(e.target.value)}
           >
@@ -155,7 +155,7 @@ export default function StudentClient({
             <option value="online">online</option>
           </select>
         )}
-        <button className="px-4 py-2 bg-blue-600 text-white rounded" type="submit">
+        <button className="btn btn-primary w-full" type="submit">
           Add Transaction
         </button>
       </form>
@@ -169,7 +169,7 @@ export default function StudentClient({
               )}
             </span>
             {isAdmin && (
-              <button onClick={() => deleteTransaction(t.id)} className="text-red-600">
+              <button onClick={() => deleteTransaction(t.id)} className="btn btn-xs btn-error">
                 Delete
               </button>
             )}

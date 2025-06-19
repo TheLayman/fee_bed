@@ -28,7 +28,7 @@ export default function ApprovalsClient({ initialApprovals }: { initialApprovals
             <span>
               {a.student.name} - {a.student.batch}: {a.amount}
             </span>
-            <button onClick={() => approve(a.id)} className="text-blue-600">
+            <button onClick={() => approve(a.id)} className="btn btn-xs btn-success">
               Approve
             </button>
           </li>
