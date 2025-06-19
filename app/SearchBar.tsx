@@ -43,7 +43,7 @@ export default function SearchBar() {
               className="px-2 py-1 hover:bg-gray-200 cursor-pointer"
               onClick={() => select(s.id)}
             >
-              {s.name} - {s.batch}
+              Name: {s.name}, Batch: {s.batch}
             </li>
           ))}
         </ul>

@@ -90,7 +90,7 @@ export default function StudentClient({
     <div className="p-6 space-y-6 max-w-xl mx-auto">
       <h1 className="text-xl font-bold flex justify-between">
         <span>
-          {studentInfo.name} - {studentInfo.batch}
+          Name: {studentInfo.name}, Batch: {studentInfo.batch}
         </span>
         {isAdmin && !editingProfile && (
           <button onClick={startProfileEdit} className="text-blue-600">
