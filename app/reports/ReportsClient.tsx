@@ -36,6 +36,7 @@ export default function ReportsClient({ students }: { students: Student[] }) {
   const [end, setEnd] = useState("");
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [totals, setTotals] = useState<{ mode: string; amount: string }[]>([]);
+  const [concessionTotal, setConcessionTotal] = useState("0");
 
   function downloadBalancesPdf() {
     const doc = new jsPDF();
@@ -58,7 +59,7 @@ export default function ReportsClient({ students }: { students: Student[] }) {
     const doc = new jsPDF();
     doc.text("Transactions", 14, 10);
     if (transactions.length > 0) {
-      const totalAmount = transactions
+      const paymentTotal = totals
         .reduce((sum, t) => sum + parseFloat(t.amount), 0)
         .toFixed(2);
       const footRows = [
@@ -66,7 +67,8 @@ export default function ReportsClient({ students }: { students: Student[] }) {
           { content: `Total ${t.mode}`, colSpan: 5 },
           t.amount,
         ]),
-        [{ content: "Total", colSpan: 5 }, totalAmount],
+        [{ content: "Total concession", colSpan: 5 }, concessionTotal],
+        [{ content: "Total", colSpan: 5 }, paymentTotal],
       ];
       autoTable(doc, {
         head: [[
@@ -83,7 +85,7 @@ export default function ReportsClient({ students }: { students: Student[] }) {
           t.student.name,
           t.student.batch,
           t.amount,
-          t.mode || "",
+          t.type === "concession" ? "concession" : t.mode || "",
         ]),
         foot: footRows,
         startY: 20,
@@ -117,6 +119,7 @@ export default function ReportsClient({ students }: { students: Student[] }) {
       const data = await res.json();
       setTransactions(data.transactions);
       setTotals(data.totals);
+      setConcessionTotal(data.concessionTotal);
     }
   }
 
@@ -282,7 +285,9 @@ export default function ReportsClient({ students }: { students: Student[] }) {
                     <td className="border px-2 py-1 text-black dark:text-gray-200">{t.student.name}</td>
                     <td className="border px-2 py-1 text-black dark:text-gray-200">{t.student.batch}</td>
                     <td className="border px-2 py-1 text-black dark:text-gray-200">{t.amount}</td>
-                    <td className="border px-2 py-1 text-black dark:text-gray-200">{t.mode}</td>
+                    <td className="border px-2 py-1 text-black dark:text-gray-200">
+                      {t.type === "concession" ? "concession" : t.mode}
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -297,10 +302,16 @@ export default function ReportsClient({ students }: { students: Student[] }) {
                 ))}
                 <tr className="font-semibold">
                   <td className="border px-2 py-1 text-black dark:text-gray-200" colSpan={5}>
+                    Total concession
+                  </td>
+                  <td className="border px-2 py-1 text-black dark:text-gray-200">{concessionTotal}</td>
+                </tr>
+                <tr className="font-semibold">
+                  <td className="border px-2 py-1 text-black dark:text-gray-200" colSpan={5}>
                     Total
                   </td>
                   <td className="border px-2 py-1 text-black dark:text-gray-200">
-                    {transactions
+                    {totals
                       .reduce((sum, t) => sum + parseFloat(t.amount), 0)
                       .toFixed(2)}
                   </td>

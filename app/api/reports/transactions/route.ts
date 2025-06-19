@@ -63,5 +63,11 @@ export async function GET(req: Request) {
     amount: m._sum.amount?.toString() || "0",
   }));
 
-  return NextResponse.json({ transactions, totals });
+  const concessionTotalAgg = await prisma.transaction.aggregate({
+    where: { ...where, type: "concession" },
+    _sum: { amount: true },
+  });
+  const concessionTotal = concessionTotalAgg._sum.amount?.toString() || "0";
+
+  return NextResponse.json({ transactions, totals, concessionTotal });
 }
