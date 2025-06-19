@@ -104,10 +104,10 @@ export default function ReportsClient({ students }: { students: Student[] }) {
 
       {reportType === "balance" && (
         <>
-          <form onSubmit={getBalances} className="space-y-2 border p-4 rounded">
+          <form onSubmit={getBalances} className="space-y-2 card bg-base-100 p-4 shadow">
             <h2 className="font-semibold">Student Balances</h2>
             <select
-              className="w-full border p-2 rounded"
+              className="select select-bordered w-full"
               value={batch}
               onChange={(e) => setBatch(e.target.value)}
             >
@@ -119,12 +119,12 @@ export default function ReportsClient({ students }: { students: Student[] }) {
               ))}
             </select>
             <input
-              className="w-full border p-2 rounded"
+              className="input input-bordered w-full"
               placeholder="Name (optional)"
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
-            <button className="px-4 py-2 bg-blue-600 text-white rounded" type="submit">
+            <button className="btn btn-primary w-full" type="submit">
               Get Balances
             </button>
           </form>
@@ -140,7 +140,7 @@ export default function ReportsClient({ students }: { students: Student[] }) {
             <button
               type="button"
               onClick={downloadBalancesPdf}
-              className="px-4 py-2 bg-green-600 text-white rounded"
+              className="btn btn-success"
             >
               Download PDF
             </button>
@@ -150,10 +150,10 @@ export default function ReportsClient({ students }: { students: Student[] }) {
 
       {reportType === "transactions" && (
         <>
-          <form onSubmit={getTransactions} className="space-y-2 border p-4 rounded">
+          <form onSubmit={getTransactions} className="space-y-2 card bg-base-100 p-4 shadow">
             <h2 className="font-semibold">Transactions</h2>
             <select
-              className="w-full border p-2 rounded"
+              className="select select-bordered w-full"
               value={tBatch}
               onChange={(e) => setTBatch(e.target.value)}
             >
@@ -165,7 +165,7 @@ export default function ReportsClient({ students }: { students: Student[] }) {
               ))}
             </select>
             <input
-              className="w-full border p-2 rounded"
+              className="input input-bordered w-full"
               placeholder="Name (optional)"
               value={tName}
               onChange={(e) => setTName(e.target.value)}
@@ -173,18 +173,18 @@ export default function ReportsClient({ students }: { students: Student[] }) {
             <div className="flex gap-2">
               <input
                 type="date"
-                className="w-full border p-2 rounded"
+                className="input input-bordered w-full"
                 value={start}
                 onChange={(e) => setStart(e.target.value)}
               />
               <input
                 type="date"
-                className="w-full border p-2 rounded"
+                className="input input-bordered w-full"
                 value={end}
                 onChange={(e) => setEnd(e.target.value)}
               />
             </div>
-            <button className="px-4 py-2 bg-blue-600 text-white rounded" type="submit">
+            <button className="btn btn-primary w-full" type="submit">
               Get Transactions
             </button>
           </form>
@@ -208,7 +208,7 @@ export default function ReportsClient({ students }: { students: Student[] }) {
             <button
               type="button"
               onClick={downloadTransactionsPdf}
-              className="px-4 py-2 bg-green-600 text-white rounded"
+              className="btn btn-success"
             >
               Download PDF
             </button>

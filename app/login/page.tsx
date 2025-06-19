@@ -6,13 +6,13 @@ export default function Login() {
   const [username, setU] = useState("");
   const [password, setP] = useState("");
   return (
-    <div className="min-h-screen flex items-center justify-center">
+    <div className="min-h-screen flex items-center justify-center bg-base-200">
       <form
         onSubmit={(e) => {
           e.preventDefault();
           signIn("credentials", { username, password, callbackUrl: "/" });
         }}
-        className="w-80 space-y-4 border p-6 rounded"
+        className="card shadow w-96 bg-base-100 space-y-4 p-6"
       >
         <h1 className="text-xl font-bold text-center">
           Jagannatha Group Fee Portal – Login

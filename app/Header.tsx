@@ -6,8 +6,8 @@ import SearchBar from "./SearchBar";
 export default async function Header() {
   const session = await getServerSession(authOptions);
   return (
-    <header className="bg-indigo-700 text-white">
-      <nav className="max-w-5xl mx-auto flex flex-wrap items-center justify-between p-4 gap-4">
+    <header className="bg-primary text-primary-content shadow">
+      <nav className="max-w-5xl mx-auto flex flex-wrap items-center justify-between p-4 gap-4 navbar">
         <Link href="/" className="font-semibold text-lg leading-tight">
           Jagannatha Group B.Ed Colleges
           <span className="block text-sm font-normal">Fee Portal</span>
@@ -29,10 +29,10 @@ export default async function Header() {
           )}
           {session ? (
             <form action="/api/auth/signout" method="post">
-              <button className="underline hover:opacity-80">Sign out</button>
+              <button className="btn btn-sm btn-outline">Sign out</button>
             </form>
           ) : (
-            <Link href="/login" className="underline">Login</Link>
+            <Link href="/login" className="btn btn-sm btn-primary">Login</Link>
           )}
         </div>
       </nav>

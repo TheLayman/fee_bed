@@ -64,38 +64,38 @@ export default function StudentsClient() {
   return (
     <div className="p-6 space-y-6 max-w-xl mx-auto">
       <h1 className="text-xl font-bold">Students</h1>
-      <form onSubmit={addStudent} className="space-y-2 border p-4 rounded">
+      <form onSubmit={addStudent} className="space-y-2 card bg-base-100 p-4 shadow">
         <input
-          className="w-full border p-2 rounded"
+          className="input input-bordered w-full"
           placeholder="Name"
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
         <input
-          className="w-full border p-2 rounded"
+          className="input input-bordered w-full"
           placeholder="Batch"
           value={batch}
           onChange={(e) => setBatch(e.target.value)}
         />
         <input
-          className="w-full border p-2 rounded"
+          className="input input-bordered w-full"
           placeholder="Total Fee"
           value={totalFee}
           onChange={(e) => setTotalFee(e.target.value)}
         />
-        <button className="px-4 py-2 bg-blue-600 text-white rounded" type="submit">
+        <button className="btn btn-primary w-full" type="submit">
           Add Student
         </button>
         {error && <p className="text-red-600">{error}</p>}
       </form>
-      <form onSubmit={importStudents} className="space-y-2 border p-4 rounded">
+      <form onSubmit={importStudents} className="space-y-2 card bg-base-100 p-4 shadow">
         <input
           type="file"
           accept=".csv"
-          className="w-full"
+          className="file-input file-input-bordered w-full"
           onChange={(e) => setCsvFile(e.target.files?.[0] || null)}
         />
-        <button className="px-4 py-2 bg-blue-600 text-white rounded" type="submit">
+        <button className="btn btn-primary w-full" type="submit">
           Import CSV
         </button>
         {importError && <p className="text-red-600">{importError}</p>}
