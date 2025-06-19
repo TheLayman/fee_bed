@@ -19,18 +19,20 @@ export default function Login() {
         </h1>
         <input
           placeholder="Username"
-          className="input input-bordered w-full"
+          className="w-full border p-2 rounded text-black"
           value={username}
           onChange={(e) => setU(e.target.value)}
         />
         <input
           type="password"
           placeholder="Password"
-          className="input input-bordered w-full"
+          className="w-full border p-2 rounded text-black"
           value={password}
           onChange={(e) => setP(e.target.value)}
         />
-        <button className="btn btn-primary w-full">Sign in</button>
+        <button className="w-full px-4 py-2 bg-blue-600 text-white rounded">
+          Sign in
+        </button>
       </form>
     </div>
   );

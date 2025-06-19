@@ -64,7 +64,7 @@ export default function TransactionsClient({
       <h1 className="text-xl font-bold">Transactions</h1>
       <form onSubmit={addTransaction} className="space-y-2 border p-4 rounded">
         <select
-          className="w-full border p-2 rounded"
+          className="w-full border p-2 rounded text-black"
           value={studentId}
           onChange={(e) => setStudentId(e.target.value)}
         >
@@ -75,7 +75,7 @@ export default function TransactionsClient({
           ))}
         </select>
         <select
-          className="w-full border p-2 rounded"
+          className="w-full border p-2 rounded text-black"
           value={type}
           onChange={(e) => setType(e.target.value)}
         >
@@ -83,14 +83,14 @@ export default function TransactionsClient({
           <option value="concession">concession</option>
         </select>
         <input
-          className="w-full border p-2 rounded"
+          className="w-full border p-2 rounded text-black"
           placeholder="Amount"
           value={amount}
           onChange={(e) => setAmount(e.target.value)}
         />
         {type === "payment" && (
           <select
-            className="w-full border p-2 rounded"
+            className="w-full border p-2 rounded text-black"
             value={mode}
             onChange={(e) => setMode(e.target.value)}
           >
