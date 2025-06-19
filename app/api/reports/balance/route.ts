@@ -33,7 +33,13 @@ export async function GET(req: Request) {
     });
   }
 
-  const results = [] as { id: string; name: string; batch: string; balance: string }[];
+  const results = [] as {
+    id: string;
+    name: string;
+    batch: string;
+    totalFee: string;
+    balance: string;
+  }[];
   for (const s of students) {
     const agg = await prisma.transaction.aggregate({
       where: { studentId: s.id, approved: true },
@@ -42,7 +48,13 @@ export async function GET(req: Request) {
     const paid = parseFloat(agg._sum.amount?.toString() || "0");
     const total = parseFloat(s.totalFee.toString());
     const bal = (total - paid).toFixed(2);
-    results.push({ id: s.id, name: s.name, batch: s.batch, balance: bal });
+    results.push({
+      id: s.id,
+      name: s.name,
+      batch: s.batch,
+      totalFee: s.totalFee.toString(),
+      balance: bal,
+    });
   }
   return NextResponse.json(results);
 }
