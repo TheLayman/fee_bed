@@ -10,7 +10,7 @@ export default async function Home() {
         Welcome to Jagannatha Group B.Ed Colleges Fee Portal
       </h1>
       {session ? (
-        <p>Use the navigation above to manage students and transactions.</p>
+        <p>Use the navigation above to manage students.</p>
       ) : (
         <p>
           <Link href="/login" className="text-blue-600 underline">
