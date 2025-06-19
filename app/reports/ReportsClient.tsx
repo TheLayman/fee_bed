@@ -2,6 +2,7 @@
 import { useState, FormEvent } from "react";
 import { jsPDF } from "jspdf";
 import autoTable from "jspdf-autotable";
+import { formatInr } from "@/lib/format";
 
 export type Student = { id: string; name: string; batch: string };
 export type Transaction = {
@@ -42,12 +43,18 @@ export default function ReportsClient({ students }: { students: Student[] }) {
     const doc = new jsPDF();
     doc.text("Student Balances", 14, 10);
     if (balances.length > 0) {
-      const totalFee = balances.reduce((sum, b) => sum + parseFloat(b.totalFee), 0).toFixed(2);
-      const totalBal = balances.reduce((sum, b) => sum + parseFloat(b.balance), 0).toFixed(2);
+      const totalFee = balances.reduce((sum, b) => sum + parseFloat(b.totalFee), 0);
+      const totalBal = balances.reduce((sum, b) => sum + parseFloat(b.balance), 0);
       autoTable(doc, {
         head: [["S.No.", "Name", "Batch", "Total Fee", "Balance"]],
-        body: balances.map((b, i) => [i + 1, b.name, b.batch, b.totalFee, b.balance]),
-        foot: [[{ content: "Total", colSpan: 3 }, totalFee, totalBal]],
+        body: balances.map((b, i) => [
+          i + 1,
+          b.name,
+          b.batch,
+          formatInr(b.totalFee),
+          formatInr(b.balance),
+        ]),
+        foot: [[{ content: "Total", colSpan: 3 }, formatInr(totalFee), formatInr(totalBal)]],
         startY: 20,
         theme: "grid",
       });
@@ -59,16 +66,14 @@ export default function ReportsClient({ students }: { students: Student[] }) {
     const doc = new jsPDF();
     doc.text("Transactions", 14, 10);
     if (transactions.length > 0) {
-      const paymentTotal = totals
-        .reduce((sum, t) => sum + parseFloat(t.amount), 0)
-        .toFixed(2);
+      const paymentTotal = totals.reduce((sum, t) => sum + parseFloat(t.amount), 0);
       const footRows = [
         ...totals.map((t) => [
           { content: `Total ${t.mode}`, colSpan: 5 },
-          t.amount,
+          formatInr(t.amount),
         ]),
-        [{ content: "Total concession", colSpan: 5 }, concessionTotal],
-        [{ content: "Total", colSpan: 5 }, paymentTotal],
+        [{ content: "Total concession", colSpan: 5 }, formatInr(concessionTotal)],
+        [{ content: "Total", colSpan: 5 }, formatInr(paymentTotal)],
       ];
       autoTable(doc, {
         head: [[
@@ -84,7 +89,7 @@ export default function ReportsClient({ students }: { students: Student[] }) {
           t.createdAt.slice(0, 10),
           t.student.name,
           t.student.batch,
-          t.amount,
+          formatInr(t.amount),
           t.type === "concession" ? "concession" : t.mode || "",
         ]),
         foot: footRows,
@@ -188,8 +193,8 @@ export default function ReportsClient({ students }: { students: Student[] }) {
                       <td className="border px-2 py-1 text-black dark:text-gray-200">{i + 1}</td>
                       <td className="border px-2 py-1 text-black dark:text-gray-200">{b.name}</td>
                       <td className="border px-2 py-1 text-black dark:text-gray-200">{b.batch}</td>
-                      <td className="border px-2 py-1 text-black dark:text-gray-200">{b.totalFee}</td>
-                      <td className="border px-2 py-1 text-black dark:text-gray-200">{b.balance}</td>
+                      <td className="border px-2 py-1 text-black dark:text-gray-200">{formatInr(b.totalFee)}</td>
+                      <td className="border px-2 py-1 text-black dark:text-gray-200">{formatInr(b.balance)}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -199,14 +204,14 @@ export default function ReportsClient({ students }: { students: Student[] }) {
                       Total
                     </td>
                     <td className="border px-2 py-1 text-black dark:text-gray-200">
-                      {balances
-                        .reduce((sum, b) => sum + parseFloat(b.totalFee), 0)
-                        .toFixed(2)}
+                      {formatInr(
+                        balances.reduce((sum, b) => sum + parseFloat(b.totalFee), 0)
+                      )}
                     </td>
                     <td className="border px-2 py-1 text-black dark:text-gray-200">
-                      {balances
-                        .reduce((sum, b) => sum + parseFloat(b.balance), 0)
-                        .toFixed(2)}
+                      {formatInr(
+                        balances.reduce((sum, b) => sum + parseFloat(b.balance), 0)
+                      )}
                     </td>
                   </tr>
                 </tfoot>
@@ -284,7 +289,7 @@ export default function ReportsClient({ students }: { students: Student[] }) {
                     </td>
                     <td className="border px-2 py-1 text-black dark:text-gray-200">{t.student.name}</td>
                     <td className="border px-2 py-1 text-black dark:text-gray-200">{t.student.batch}</td>
-                    <td className="border px-2 py-1 text-black dark:text-gray-200">{t.amount}</td>
+                    <td className="border px-2 py-1 text-black dark:text-gray-200">{formatInr(t.amount)}</td>
                     <td className="border px-2 py-1 text-black dark:text-gray-200">
                       {t.type === "concession" ? "concession" : t.mode}
                     </td>
@@ -297,23 +302,23 @@ export default function ReportsClient({ students }: { students: Student[] }) {
                     <td className="border px-2 py-1 text-black dark:text-gray-200" colSpan={5}>
                       Total {t.mode}
                     </td>
-                    <td className="border px-2 py-1 text-black dark:text-gray-200">{t.amount}</td>
+                    <td className="border px-2 py-1 text-black dark:text-gray-200">{formatInr(t.amount)}</td>
                   </tr>
                 ))}
                 <tr className="font-semibold">
                   <td className="border px-2 py-1 text-black dark:text-gray-200" colSpan={5}>
                     Total concession
                   </td>
-                  <td className="border px-2 py-1 text-black dark:text-gray-200">{concessionTotal}</td>
+                  <td className="border px-2 py-1 text-black dark:text-gray-200">{formatInr(concessionTotal)}</td>
                 </tr>
                 <tr className="font-semibold">
                   <td className="border px-2 py-1 text-black dark:text-gray-200" colSpan={5}>
                     Total
                   </td>
                   <td className="border px-2 py-1 text-black dark:text-gray-200">
-                    {totals
-                      .reduce((sum, t) => sum + parseFloat(t.amount), 0)
-                      .toFixed(2)}
+                    {formatInr(
+                      totals.reduce((sum, t) => sum + parseFloat(t.amount), 0)
+                    )}
                   </td>
                 </tr>
               </tfoot>
