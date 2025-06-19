@@ -9,7 +9,7 @@ export type Transaction = {
   student: { name: string; batch: string };
   type: string;
   amount: string;
-  mode: string | null;
+  mode: string;
   approved: boolean;
   createdAt: string;
 };
@@ -36,6 +36,7 @@ export default function ReportsClient({ students }: { students: Student[] }) {
   const [end, setEnd] = useState("");
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [totals, setTotals] = useState<{ mode: string; amount: string }[]>([]);
+  const [concessionTotal, setConcessionTotal] = useState("0");
 
   function downloadBalancesPdf() {
     const doc = new jsPDF();
@@ -58,7 +59,7 @@ export default function ReportsClient({ students }: { students: Student[] }) {
     const doc = new jsPDF();
     doc.text("Transactions", 14, 10);
     if (transactions.length > 0) {
-      const totalAmount = transactions
+      const paymentTotal = totals
         .reduce((sum, t) => sum + parseFloat(t.amount), 0)
         .toFixed(2);
       const footRows = [
@@ -66,7 +67,8 @@ export default function ReportsClient({ students }: { students: Student[] }) {
           { content: `Total ${t.mode}`, colSpan: 5 },
           t.amount,
         ]),
-        [{ content: "Total", colSpan: 5 }, totalAmount],
+        [{ content: "Total Concession", colSpan: 5 }, concessionTotal],
+        [{ content: "Total", colSpan: 5 }, paymentTotal],
       ];
       autoTable(doc, {
         head: [[
@@ -83,7 +85,7 @@ export default function ReportsClient({ students }: { students: Student[] }) {
           t.student.name,
           t.student.batch,
           t.amount,
-          t.mode || "",
+          t.mode,
         ]),
         foot: footRows,
         startY: 20,
@@ -117,6 +119,7 @@ export default function ReportsClient({ students }: { students: Student[] }) {
       const data = await res.json();
       setTransactions(data.transactions);
       setTotals(data.totals);
+      setConcessionTotal(data.concessionTotal);
     }
   }
 
@@ -297,10 +300,16 @@ export default function ReportsClient({ students }: { students: Student[] }) {
                 ))}
                 <tr className="font-semibold">
                   <td className="border px-2 py-1" colSpan={5}>
+                    Total Concession
+                  </td>
+                  <td className="border px-2 py-1">{concessionTotal}</td>
+                </tr>
+                <tr className="font-semibold">
+                  <td className="border px-2 py-1" colSpan={5}>
                     Total
                   </td>
                   <td className="border px-2 py-1">
-                    {transactions
+                    {totals
                       .reduce((sum, t) => sum + parseFloat(t.amount), 0)
                       .toFixed(2)}
                   </td>
