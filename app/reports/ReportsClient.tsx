@@ -1,6 +1,7 @@
 "use client";
 import { useState, FormEvent } from "react";
 import { jsPDF } from "jspdf";
+import autoTable from "jspdf-autotable";
 
 export type Student = { id: string; name: string; batch: string };
 export type Transaction = {
@@ -38,20 +39,17 @@ export default function ReportsClient({ students }: { students: Student[] }) {
 
   function downloadBalancesPdf() {
     const doc = new jsPDF();
-    doc.text("Student Balances", 10, 10);
-    balances.forEach((b, i) => {
-      const line = `${i + 1}. ${b.name} - ${b.batch}: Fee ${b.totalFee} Balance ${b.balance}`;
-      doc.text(line, 10, 20 + i * 10);
-    });
+    doc.text("Student Balances", 14, 10);
     if (balances.length > 0) {
-      const totalFee = balances
-        .reduce((sum, b) => sum + parseFloat(b.totalFee), 0)
-        .toFixed(2);
-      const totalBal = balances
-        .reduce((sum, b) => sum + parseFloat(b.balance), 0)
-        .toFixed(2);
-      const y = 20 + balances.length * 10 + 10;
-      doc.text(`Total  ${totalFee}  ${totalBal}`, 10, y);
+      const totalFee = balances.reduce((sum, b) => sum + parseFloat(b.totalFee), 0).toFixed(2);
+      const totalBal = balances.reduce((sum, b) => sum + parseFloat(b.balance), 0).toFixed(2);
+      autoTable(doc, {
+        head: [["S.No.", "Name", "Batch", "Total Fee", "Balance"]],
+        body: balances.map((b, i) => [i + 1, b.name, b.batch, b.totalFee, b.balance]),
+        foot: [[{ content: "Total", colSpan: 3 }, totalFee, totalBal]],
+        startY: 20,
+        theme: "grid",
+      });
     }
     doc.save("balances.pdf");
   }
