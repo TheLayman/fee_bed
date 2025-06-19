@@ -59,16 +59,33 @@ export default function ReportsClient({ students }: { students: Student[] }) {
   function downloadTransactionsPdf() {
     const doc = new jsPDF();
     doc.text("Transactions", 10, 10);
+    let y = 20;
+    doc.text("S.No.", 10, y);
+    doc.text("Date", 30, y);
+    doc.text("Name", 60, y);
+    doc.text("Batch", 100, y);
+    doc.text("Amount", 130, y);
+    doc.text("Mode", 160, y);
+    y += 10;
     transactions.forEach((t, i) => {
-      const line = `${t.createdAt.slice(0, 10)} - ${t.student.name} - ${t.student.batch}: ${t.type} ${t.amount}${t.mode ? ` (${t.mode})` : ""}`;
-      doc.text(line, 10, 20 + i * 10);
+      doc.text(String(i + 1), 10, y);
+      doc.text(t.createdAt.slice(0, 10), 30, y);
+      doc.text(t.student.name, 60, y);
+      doc.text(t.student.batch, 100, y);
+      doc.text(t.amount, 130, y);
+      doc.text(t.mode || "", 160, y);
+      y += 10;
     });
-    if (totals.length > 0) {
-      let y = 20 + transactions.length * 10 + 10;
-      totals.forEach((t, i) => {
-        doc.text(`Total ${t.mode}: ${t.amount}`, 10, y + i * 10);
-      });
-    }
+    totals.forEach((t) => {
+      doc.text(`Total ${t.mode}`, 60, y);
+      doc.text(t.amount, 130, y);
+      y += 10;
+    });
+    const totalAmount = transactions
+      .reduce((sum, t) => sum + parseFloat(t.amount), 0)
+      .toFixed(2);
+    doc.text("Total", 60, y);
+    doc.text(totalAmount, 130, y);
     doc.save("transactions.pdf");
   }
 
@@ -239,21 +256,55 @@ export default function ReportsClient({ students }: { students: Student[] }) {
               Get Transactions
             </button>
           </form>
-          <ul className="space-y-1">
-            {transactions.map((t) => (
-              <li key={t.id} className="border p-2 rounded">
-                {t.createdAt.slice(0, 10)} - {t.student.name} - {t.student.batch}: {t.type}{" "}
-                {t.amount} {t.mode ? `(${t.mode})` : ""}
-              </li>
-            ))}
-            {transactions.length === 0 && <p>No transactions</p>}
-          </ul>
-          {totals.length > 0 && (
-            <div className="space-y-1">
-              {totals.map((t) => (
-                <p key={t.mode}>Total {t.mode}: {t.amount}</p>
-              ))}
-            </div>
+          {transactions.length > 0 ? (
+            <table className="min-w-full border mt-2">
+              <thead>
+                <tr className="bg-gray-100">
+                  <th className="border px-2 py-1 text-left">S.No.</th>
+                  <th className="border px-2 py-1 text-left">Date</th>
+                  <th className="border px-2 py-1 text-left">Name</th>
+                  <th className="border px-2 py-1 text-left">Batch</th>
+                  <th className="border px-2 py-1 text-left">Amount</th>
+                  <th className="border px-2 py-1 text-left">Payment Mode</th>
+                </tr>
+              </thead>
+              <tbody>
+                {transactions.map((t, i) => (
+                  <tr key={t.id} className="odd:bg-white even:bg-gray-50">
+                    <td className="border px-2 py-1">{i + 1}</td>
+                    <td className="border px-2 py-1">
+                      {t.createdAt.slice(0, 10)}
+                    </td>
+                    <td className="border px-2 py-1">{t.student.name}</td>
+                    <td className="border px-2 py-1">{t.student.batch}</td>
+                    <td className="border px-2 py-1">{t.amount}</td>
+                    <td className="border px-2 py-1">{t.mode}</td>
+                  </tr>
+                ))}
+              </tbody>
+              <tfoot>
+                {totals.map((t) => (
+                  <tr key={t.mode} className="font-semibold">
+                    <td className="border px-2 py-1" colSpan={5}>
+                      Total {t.mode}
+                    </td>
+                    <td className="border px-2 py-1">{t.amount}</td>
+                  </tr>
+                ))}
+                <tr className="font-semibold">
+                  <td className="border px-2 py-1" colSpan={5}>
+                    Total
+                  </td>
+                  <td className="border px-2 py-1">
+                    {transactions
+                      .reduce((sum, t) => sum + parseFloat(t.amount), 0)
+                      .toFixed(2)}
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
+          ) : (
+            <p>No transactions</p>
           )}
           {transactions.length > 0 && (
             <button
