@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect, FormEvent } from "react";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { formatInr } from "@/lib/format";
 
 type Student = {
@@ -12,6 +12,7 @@ type Student = {
 };
 
 export default function HomeClient() {
+  const router = useRouter();
   const [batch, setBatch] = useState("");
   const [name, setName] = useState("");
   const [students, setStudents] = useState<Student[]>([]);
@@ -81,11 +82,13 @@ export default function HomeClient() {
           </thead>
           <tbody>
             {filtered.map((s, i) => (
-              <tr key={s.id} className="odd:bg-white even:bg-gray-50 dark:odd:bg-gray-800 dark:even:bg-gray-700">
+              <tr
+                key={s.id}
+                onClick={() => router.push(`/students/${s.id}`)}
+                className="odd:bg-white even:bg-gray-50 dark:odd:bg-gray-800 dark:even:bg-gray-700 cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-600"
+              >
                 <td className="border px-2 py-1 text-black dark:text-gray-200">{i + 1}</td>
-                <td className="border px-2 py-1 text-blue-600 hover:underline text-black dark:text-gray-200">
-                  <Link href={`/students/${s.id}`}>{s.name}</Link>
-                </td>
+                <td className="border px-2 py-1 text-black dark:text-gray-200">{s.name}</td>
                 <td className="border px-2 py-1 text-black dark:text-gray-200">{s.batch}</td>
                 <td className="border px-2 py-1 text-black dark:text-gray-200">{formatInr(s.totalFee)}</td>
                 <td className="border px-2 py-1 text-black dark:text-gray-200">{formatInr(s.balance)}</td>
