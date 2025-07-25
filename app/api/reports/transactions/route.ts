@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { prisma } from "@/lib/prisma";
 import { authOptions } from "@/lib/auth";
-import { Prisma } from "@prisma/client";
 
 export async function GET(req: Request) {
   const session = await getServerSession(authOptions);
@@ -15,11 +14,11 @@ export async function GET(req: Request) {
   const start = searchParams.get("start");
   const end = searchParams.get("end");
 
-  const where: Prisma.TransactionWhereInput = {};
+  const where: any = {};
   if (name || batch) {
     where.student = {
       ...(name
-        ? { name: { contains: name, mode: Prisma.QueryMode.insensitive } }
+        ? { name: { contains: name, mode: "insensitive" } }
         : {}),
       ...(batch ? { batch } : {}),
     };
@@ -47,7 +46,7 @@ export async function GET(req: Request) {
     },
     orderBy: { createdAt: "desc" },
   });
-  const transactions = txns.map((t) => ({
+  const transactions = txns.map((t: any) => ({
     ...t,
     amount: t.amount.toString(),
     createdAt: t.createdAt.toISOString(),
@@ -58,7 +57,7 @@ export async function GET(req: Request) {
     where: { ...where, type: "payment", mode: { not: null } },
     _sum: { amount: true },
   });
-  const totals = modeTotalsRaw.map((m) => ({
+  const totals = modeTotalsRaw.map((m: any) => ({
     mode: m.mode!,
     amount: m._sum.amount?.toString() || "0",
   }));

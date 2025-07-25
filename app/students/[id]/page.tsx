@@ -33,7 +33,7 @@ export default async function StudentPage({
     },
     orderBy: { createdAt: "desc" },
   });
-  const transactions = txns.map((t) => ({
+  const transactions = txns.map((t: any) => ({
     ...t,
     amount: t.amount.toString(),
     createdAt: t.createdAt.toISOString(),

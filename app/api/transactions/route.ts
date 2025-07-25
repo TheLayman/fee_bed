@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { prisma } from "@/lib/prisma";
 import { authOptions } from "@/lib/auth";
-import { Prisma } from "@prisma/client";
 
 export async function GET(req: Request) {
   const session = await getServerSession(authOptions);
@@ -26,7 +25,7 @@ export async function GET(req: Request) {
     },
     orderBy: { createdAt: "desc" },
   });
-  const data = txns.map((t) => ({
+  const data = txns.map((t: any) => ({
     ...t,
     amount: t.amount.toString(),
     createdAt: t.createdAt.toISOString(),
@@ -79,9 +78,8 @@ export async function POST(req: Request) {
       },
       { status: 201 }
     );
-  } catch (err) {
+  } catch (err: any) {
     if (
-      err instanceof Prisma.PrismaClientKnownRequestError &&
       err.code === "P2003"
     ) {
       return new NextResponse("Invalid student", { status: 400 });

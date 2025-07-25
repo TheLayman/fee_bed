@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { prisma } from "@/lib/prisma";
 import { authOptions } from "@/lib/auth";
-import { Prisma } from "@prisma/client";
 
 export async function PUT(
   req: Request,
@@ -21,9 +20,8 @@ export async function PUT(
       select: { id: true, name: true, batch: true, totalFee: true },
     });
     return NextResponse.json(student);
-  } catch (err) {
+  } catch (err: any) {
     if (
-      err instanceof Prisma.PrismaClientKnownRequestError &&
       err.code === "P2002"
     ) {
       return new NextResponse("Student already exists", { status: 400 });

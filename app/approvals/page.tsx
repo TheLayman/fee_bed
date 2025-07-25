@@ -17,7 +17,7 @@ export default async function ApprovalsPage() {
       amount: true,
     },
   });
-  const approvals = pending.map((p) => ({
+  const approvals = pending.map((p: any) => ({
     ...p,
     amount: p.amount.toString(),
   }));

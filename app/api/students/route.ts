@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { prisma } from "@/lib/prisma";
 import { authOptions } from "@/lib/auth";
-import { Prisma } from "@prisma/client";
 
 export async function GET(req: Request) {
   const session = await getServerSession(authOptions);
@@ -12,7 +11,7 @@ export async function GET(req: Request) {
   const url = new URL(req.url);
   const q = url.searchParams.get("q") || undefined;
   const where = q
-    ? { name: { contains: q, mode: Prisma.QueryMode.insensitive } }
+    ? { name: { contains: q, mode: "insensitive" } }
     : undefined;
   const students = await prisma.student.findMany({
     where,
@@ -37,9 +36,8 @@ export async function POST(req: Request) {
       select: { id: true, name: true, batch: true, totalFee: true },
     });
     return NextResponse.json(student, { status: 201 });
-  } catch (err) {
+  } catch (err: any) {
     if (
-      err instanceof Prisma.PrismaClientKnownRequestError &&
       err.code === "P2002"
     ) {
       return new NextResponse("Student already exists", { status: 400 });

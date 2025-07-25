@@ -3,7 +3,6 @@ import { getServerSession } from "next-auth";
 import { prisma } from "@/lib/prisma";
 import { authOptions } from "@/lib/auth";
 import bcrypt from "bcryptjs";
-import { Prisma } from "@prisma/client";
 
 export async function DELETE(
   request: Request,
@@ -42,9 +41,8 @@ export async function PUT(
       select: { id: true, username: true, role: true },
     });
     return NextResponse.json(user);
-  } catch (err) {
+  } catch (err: any) {
     if (
-      err instanceof Prisma.PrismaClientKnownRequestError &&
       err.code === "P2002"
     ) {
       return new NextResponse("Username already exists", { status: 400 });

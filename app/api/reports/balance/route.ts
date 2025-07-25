@@ -2,7 +2,6 @@ import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { prisma } from "@/lib/prisma";
 import { authOptions } from "@/lib/auth";
-import { Prisma } from "@prisma/client";
 
 export async function GET(req: Request) {
   const session = await getServerSession(authOptions);
@@ -25,7 +24,7 @@ export async function GET(req: Request) {
     students = await prisma.student.findMany({
       where: {
         ...(name
-          ? { name: { contains: name, mode: Prisma.QueryMode.insensitive } }
+          ? { name: { contains: name, mode: "insensitive" } }
           : {}),
         ...(batch ? { batch } : {}),
       },
