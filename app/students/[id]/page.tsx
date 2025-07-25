@@ -7,9 +7,9 @@ import StudentClient from "./StudentClient";
 export default async function StudentPage({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: { id: string };
 }) {
-  const { id } = await params;
+  const { id } = params;
   const session = await getServerSession(authOptions);
   if (!session) {
     redirect("/login");
